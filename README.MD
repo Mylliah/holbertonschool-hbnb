@@ -1,5 +1,5 @@
 # AirBnB Clone Project
->
+> A custom version of AirBnB
 
 ## Welcome to the HBNB project
 
