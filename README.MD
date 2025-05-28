@@ -22,5 +22,5 @@ The project aims to provide users with an intuitive and secure interface to publ
 <p align="right"><a href="#navigation">↑ Back to Navigation</a></p>
 
 [Benjamin Estrada](https://github.com/Aluranae)
-[](https://github.com/ninaglss15)
-[](https://github.com/Mylliah)
+[Mylliah](https://github.com/Mylliah)
+[ninaglss](https://github.com/ninaglss15)
