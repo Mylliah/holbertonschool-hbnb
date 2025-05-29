@@ -36,6 +36,7 @@ This modeling phase ensures consistency, modularity, and clarity before the actu
 
 # HBnB - BL and API
 
+[BL and API](https://github.com/Aluranae/holbertonschool-hbnb/tree/main/UML)
 
 <p align="right"><a href="#navigation">↑ Back to Navigation</a></p>
 
@@ -44,6 +45,7 @@ This modeling phase ensures consistency, modularity, and clarity before the actu
 # HBnB - Auth and DB
 
 
+[Auth & DB](https://github.com/Aluranae/holbertonschool-hbnb/tree/main/UML)
 
 <p align="right"><a href="#navigation">↑ Back to Navigation</a></p>
 
@@ -53,6 +55,7 @@ This modeling phase ensures consistency, modularity, and clarity before the actu
 
 
 
+[Simple Web Client](https://github.com/Aluranae/holbertonschool-hbnb/tree/main/UML)
 
 <p align="right"><a href="#navigation">↑ Back to Navigation</a></p>
 
