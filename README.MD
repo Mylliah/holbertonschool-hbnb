@@ -14,6 +14,20 @@ The project aims to provide users with an intuitive and secure interface to publ
 - [HBnB - Auth & DB](#hbnb---auth-&-db)
 - [HBnB - Simple Web Client](#hbnb---simple-web-client)
 
+---
+
+# HBnB - uml
+
+As a preliminary step before implementation, this subproject focuses on designing the core architecture of the HBnB application using UML (Unified Modeling Language). The objective is to plan, model, and document the main components of the system — including users, places, reviews, and amenities — through a set of standardized diagrams.
+
+- The goal is to produce clear, structured documentation that will guide the development of the full application. This includes:
+- A high-level package diagram to illustrate modular organization.
+- A detailed class diagram representing the business logic layer.
+- Sequence diagrams that map out key user interactions via the API.
+- A final compilation of all these elements into a cohesive technical blueprint.
+
+This modeling phase ensures consistency, modularity, and clarity before the actual coding begins, laying a strong foundation for the HBnB project.
+
 
 
 
