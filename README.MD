@@ -28,6 +28,8 @@ As a preliminary step before implementation, this subproject focuses on designin
 
 This modeling phase ensures consistency, modularity, and clarity before the actual coding begins, laying a strong foundation for the HBnB project.
 
+[UML](https://github.com/Aluranae/holbertonschool-hbnb/tree/main/UML)
+
 <p align="right"><a href="#navigation">↑ Back to Navigation</a></p>
 
 ---
