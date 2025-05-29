@@ -9,7 +9,10 @@ The project aims to provide users with an intuitive and secure interface to publ
 
 ## Navigation
 
-
+- [HBnB - UML](#hbnb---uml)
+- [HBnB - BL and API](#hbnb---bl-and-api)
+- [HBnB - Auth & DB](#hbnb---auth-&-db)
+- [HBnB - Simple Web Client](#hbnb---simple-web-client)
 
 
 
