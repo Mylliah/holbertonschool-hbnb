@@ -11,7 +11,7 @@ The project aims to provide users with an intuitive and secure interface to publ
 
 - [HBnB - UML](#hbnb---uml)
 - [HBnB - BL and API](#hbnb---bl-and-api)
-- [HBnB - Auth & DB](#hbnb---auth-&-db)
+- [HBnB - Auth & DB](#hbnb---auth-and-db)
 - [HBnB - Simple Web Client](#hbnb---simple-web-client)
 
 ---
@@ -28,12 +28,33 @@ As a preliminary step before implementation, this subproject focuses on designin
 
 This modeling phase ensures consistency, modularity, and clarity before the actual coding begins, laying a strong foundation for the HBnB project.
 
+<p align="right"><a href="#navigation">↑ Back to Navigation</a></p>
+
+---
+
+# HBnB - BL and API
+
+
+<p align="right"><a href="#navigation">↑ Back to Navigation</a></p>
+
+---
+
+# HBnB - Auth and DB
+
+
+
+<p align="right"><a href="#navigation">↑ Back to Navigation</a></p>
+
+---
+
+# HBnB - Simple Web Client
 
 
 
 
+<p align="right"><a href="#navigation">↑ Back to Navigation</a></p>
 
-
+---
 
 ## Authors
 <p align="right"><a href="#navigation">↑ Back to Navigation</a></p>
