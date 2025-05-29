@@ -16,7 +16,7 @@ The project aims to provide users with an intuitive and secure interface to publ
 
 ---
 
-# HBnB - uml
+# HBnB - UML
 
 As a preliminary step before implementation, this subproject focuses on designing the core architecture of the HBnB application using UML (Unified Modeling Language). The objective is to plan, model, and document the main components of the system — including users, places, reviews, and amenities — through a set of standardized diagrams.
 
