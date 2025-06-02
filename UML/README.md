@@ -266,7 +266,7 @@ Each scenario is concrete and explained with a real-life example.
 
 ---
 
-![Fetching](./Fetching_a_list_of_Places.png)
+![Fetching](./Fetching_a_List_of_Places.png)
 
 ### 4. 🔍 Fetching Places
 
