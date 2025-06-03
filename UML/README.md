@@ -87,7 +87,9 @@ Each repository is specialized in data access for one model.
 This diagram shows the main **business entities** used in the app.  
 Each entity corresponds to a real object handled by the user or the system.
 
-![Class](./Class_Diagram.png)
+<p align="center">
+  <img src="./Class_Diagram.png" width="300" />
+</p>
 
 ---
 
