@@ -223,7 +223,10 @@ With →→ `validate_user_data()`:
 
 **7. The server responds to the website that the registration was successful →→ `201 Created {user_id, message}`, and Léa can now log in.**
 
-**Example:** If “lea@gmail.com” already exists → error message is returned.
+**Example:**  
+Léa tries to register with “lea@gmail.com”
+- If this email already exists: she receives an error message “This email is already in use” →→ returned by `check_email_exists`.
+- If everything is valid: she receives “Welcome to HBnB!” and her `user_id` is generated.
 
 ---
 
