@@ -236,23 +236,28 @@ Léa tries to register with “lea@gmail.com”
 
 > Paul wants to publish his apartment in Fréjus.
 
-1. He submits the form (country, price, address…)
-2. `POST /places` → handled by `PlaceController`
-3. Calls `create_place(data, user_id)` in `HBnBFacade`
-4. Validation:
-   - `validate_coordinates()`
-   - `validate_price()`
-   - `validate_amenities()` via `AmenityRepository`
+**What happens technically, step by step:**  
+1. Paul fills out the form (`country`, `city`, `address`, `housing_type`, `room_count`, `description`, `price`, `latitude`, `longitude`, `amenities`).  
+2. The website sends the request to the API via `POST /places`, handled by `PlaceController`.  
+3. The controller calls the method `create_place(place_data, user_id)` on `HBnBFacade`.  
+4. The facade delegates to `PlaceModel` to perform validations:  
+With →→ `validate_place_data()`:
+- that the coordinates are valid (no latitude like 999!) →→ `validate_coordinates()`  
+- that the price is positive →→ `validate_price()`  
+- that the selected amenities actually exist in the database →→ `validate_amenities(amenity_ids)`
 
-5. If valid:
-   - Create place instance
-   - `generate_uuid()`
-   - `set_timestamps()`
-6. Save place: `save_place()`
-7. Link place to selected amenities via `place_amenities`
-8. Return: `201 Created` with `place_id`
+5. If everything is valid (`amenities_valid`), the place instance is created with →→ `create_place_instance()`:  
+- a new unique ID is generated for the place →→ `generate_uuid()`  
+- creation/update timestamps are added to the database →→ `set_timestamps()`
 
-**Example:** If Paul selects “WiFi” and “Pool” → the system checks if those amenities exist.
+6. The place is saved to the database by `PlaceRepository` using →→ `save_place(place_instance)`  
+7. The amenity/place associations are recorded in the database via `INSERT INTO place_amenities VALUES (…)`.  
+8. The server confirms to Paul that his place has been published →→ `201 Created {place_id, message}`.
+
+**Example:**  
+If Paul selects “WiFi” and “Pool” → the system checks if those amenities exist.  
+**AmenityRepository**  
+If Paul enters a negative price or forgets the address, he receives an error message triggered by `validate_price()`
 
 ---
 
