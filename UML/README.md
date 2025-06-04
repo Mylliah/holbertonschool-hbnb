@@ -244,9 +244,9 @@ _a user creates a new place listing_
 3. The controller calls the method `create_place(place_data, user_id)` on `HBnBFacade`.  
 4. The facade delegates to `PlaceModel` to perform validations:  
 With →→ `validate_place_data()`:
-  - that the coordinates are valid (no latitude like 999!) →→ `validate_coordinates()`  
-  - that the price is positive →→ `validate_price()`  
-  - that the selected amenities actually exist in the database →→ `validate_amenities(amenity_ids)`
+   - that the coordinates are valid (no latitude like 999!) →→ `validate_coordinates()`  
+   - that the price is positive →→ `validate_price()`  
+   - that the selected amenities actually exist in the database →→ `validate_amenities(amenity_ids)`
 
 5. If everything is valid (`amenities_valid`), the place instance is created with →→ `create_place_instance()`:  
    - a new unique ID is generated for the place →→ `generate_uuid()`  
