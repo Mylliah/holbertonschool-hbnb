@@ -201,7 +201,8 @@ Each scenario is concrete and explained with a real-life example.
 
 ![User](./User_registration.png)
 
-### 1. ✍️ User Registration: a user signs up for a new account
+### 1. ✍️ User Registration
+_a user signs up for a new account_
 
 **The technical flow, step by step:**
 > Léa wants to sign up on HBnB.
@@ -232,7 +233,8 @@ Léa tries to register with “lea@gmail.com”
 
 ![Place](./Place_creation.png)
 
-### 2. 🏡 Place Creation: a user creates a new place listing
+### 2. 🏡 Place Creation
+_a user creates a new place listing_
 
 > Paul wants to publish his apartment in Fréjus.
 
@@ -263,7 +265,8 @@ If Paul enters a negative price or forgets the address, he receives an error mes
 
 ![Review](./Review_Submission.png)
 
-### 3. ⭐ Review Submission: a user submits a review for a place 
+### 3. ⭐ Review Submission
+_a user submits a review for a place_
 
 > Léa wants to leave a review on Paul’s place.
 
