@@ -284,7 +284,8 @@ If Paul enters a negative price or forgets the address, he receives an error mes
 6. The review is saved to the database by `ReviewRepository` using →→ `save_review(review_instance)` via `INSERT INTO reviews VALUES (…)`  
 7. The server responds: “Thank you for your review!” →→ `201 Created {review_id, message}`.
 
-**Example:** If Léa tries to review the same place twice → error returned.
+**Example:**  
+If Léa tries to rate the same place twice →→ check_existing_review finds an existing review and returns an error: “You have already submitted a review.”
 
 ---
 
