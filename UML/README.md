@@ -209,7 +209,7 @@ Each scenario is concrete and explained with a real-life example.
 1. She fills in the form (email, password…)
 2. The website sends a `POST /users/registration` request
 3. The controller calls `register_user()` in `HBnBFacade`
-**4. The facade delegates to `UserModel` to perform checks:**  
+4. The facade delegates to `UserModel` to perform checks:
 With →→ `validate_user_data()`:
 - that the email is properly formatted (e.g., no typos) →→ `check_email_format()`
 - that the password is strong enough →→ `hash_password()` which returns a hashed, unreadable, and thus secure version even if the database is compromised  
