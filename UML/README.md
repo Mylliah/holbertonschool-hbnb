@@ -65,7 +65,7 @@ The controller **never speaks directly to a model**; it calls a method of the fa
 - It contains the **repositories**:  
   `UserRepository`, `PlaceRepository`, `ReviewRepository`, `AmenityRepository`.
 Each repository is specialized in data access for one model.
-- `Persistence calls`: low-level operations that directly interact with the database, typically through raw SQL queries or ORM methods.
+- **Persistence calls**: low-level operations that directly interact with the database, typically through raw SQL queries or ORM methods.
 
 ---
 
