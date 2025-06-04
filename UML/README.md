@@ -19,9 +19,8 @@ Each diagram is accompanied by detailed explanations, so that everyone (develope
 This diagram represents the technical organization of our **HBnB** application into **three main layers**, each with a well-defined role. This is called a **layered architecture**, widely used to structure modern web applications.
 
 <p align="center">
-  <img src="./Package_Diagram_resize.png" width="300" />
+  <img src="./Package_Diagram.png" width="300" />
 </p>
-
 
 ---
 
