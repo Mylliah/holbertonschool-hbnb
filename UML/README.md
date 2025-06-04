@@ -316,7 +316,7 @@ With →→ `find_places_by_criteria(filters)` which executes `SELECT * FROM pla
 **Example Displayed:**
 > “Cozy Studio, €90, WiFi, 4.7/5 stars (15 reviews)”  
 
-Each displayed place includes its amenities (`amenities`), its rating (`average_rating`), and the number of reviews (`total_reviews`).
+Each displayed place includes its facilities (`amenities`), its rating (`average_rating`), and the number of reviews (`total_reviews`).
 
 ---
 
