@@ -38,21 +38,23 @@ This diagram represents the technical organization of our **HBnB** application i
 - `ReviewController`: user reviews.
 - `AmenityController`: amenities (WiFi, pool, etc.).
 
+- **In practical terms:**
 When a user clicks a button, it's **one of these controllers** that receives the info and passes it to the system.
 
 ---
 
 ### 2. Business Logic (`BusinessLogicLayer`)
 
-> 🧠 This is the **core of the app**.
+> 🫀 This is the **core of the app**. This is where business logic and operations are managed.
 
 It contains:
 - the **business models** (`User`, `Place`, `Review`, `Amenity`)  
 - the **central facade** `HBnBFacade` that links controllers to models
 
+- **In practical terms:**
 All business rules are managed here: validation, processing, calculations.
 
-The controller **never speaks directly to a model**; it goes through `HBnBFacade`, which keeps the code clean and avoids tight coupling.
+The controller **never speaks directly to a model**; it calls a method of the facade (register_user()), which then validates the data, creates the user, and so on. This keeps the code clean and prevents tight coupling.
 
 ---
 
@@ -63,8 +65,8 @@ The controller **never speaks directly to a model**; it goes through `HBnBFacade
 - It stores and retrieves objects from the database.
 - It contains the **repositories**:  
   `UserRepository`, `PlaceRepository`, `ReviewRepository`, `AmenityRepository`.
-
 Each repository is specialized in data access for one model.
+- `Persistence calls`: low-level operations that directly interact with the database, typically through raw SQL queries or ORM methods.
 
 ---
 
