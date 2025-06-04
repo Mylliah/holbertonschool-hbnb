@@ -50,7 +50,7 @@ It contains:
 - the **business models** (`User`, `Place`, `Review`, `Amenity`)  
 - the **central facade** `HBnBFacade` that links controllers to models
 
-**In practical terms:**  
+**Concretely:**  
 All business rules are managed here: validation, processing, calculations.
 
 The controller **never speaks directly to a model**; it calls a method of the facade (register_user()), which then validates the data, creates the user, and so on. This keeps the code clean and prevents tight coupling.
@@ -66,6 +66,8 @@ The controller **never speaks directly to a model**; it calls a method of the fa
   `UserRepository`, `PlaceRepository`, `ReviewRepository`, `AmenityRepository`.
 Each repository is specialized in data access for one model.
 - **Persistence calls**: low-level operations that directly interact with the database, typically through raw SQL queries or ORM methods.
+
+
 
 ---
 
