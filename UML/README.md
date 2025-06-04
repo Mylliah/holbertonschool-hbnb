@@ -232,7 +232,7 @@ Léa tries to register with “lea@gmail.com”
 
 ![Place](./Place_creation.png)
 
-### 2. 🏡 Place Creation
+### 2. 🏡 Place Creation: a user creates a new place listing
 
 > Paul wants to publish his apartment in Fréjus.
 
