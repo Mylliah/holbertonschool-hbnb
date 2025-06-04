@@ -291,7 +291,8 @@ If Léa tries to rate the same place twice →→ check_existing_review finds an
 
 ![Fetching](./Fetching_a_List_of_Places.png)
 
-### 4. 🔍 Fetching Places: a user requests a list of places based on certain criteria
+### 4. 🔍 Fetching Places
+*a user requests a list of places based on certain criteria*
 
 > Léa searches for a place in Fréjus with WiFi and a budget under €100.
 
