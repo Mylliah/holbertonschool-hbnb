@@ -201,23 +201,27 @@ Each scenario is concrete and explained with a real-life example.
 
 ![User](./User_registration.png)
 
-### 1. ✍️ User Registration
+### 1. ✍️ User Registration: a user signs up for a new account
 
+**The technical flow, step by step:**
 > Léa wants to sign up on HBnB.
 
 1. She fills in the form (email, password…)
 2. The website sends a `POST /users/registration` request
 3. The controller calls `register_user()` in `HBnBFacade`
-4. Validation:
-   - `check_email_format()`
-   - `hash_password()`
-   - `check_email_exists()` via `UserRepository`
-5. If everything is valid:
-   - Create user instance
-   - `generate_uuid()`
-   - `set_timestamps()`
-6. Save user: `save_user(user_instance)`
-7. Return: `201 Created` with `user_id`
+**4. The facade delegates to `UserModel` to perform checks:**  
+With →→ `validate_user_data()`:
+- that the email is properly formatted (e.g., no typos) →→ `check_email_format()`
+- that the password is strong enough →→ `hash_password()` which returns a hashed, unreadable, and thus secure version even if the database is compromised  
+- that the email is not already in use by someone else →→ `check_email_exists(email)`, by checking in the database via `UserRepository` (`SELECT * FROM users WHERE email = ?`)
+
+**5. If the email is available (`email_available`), a user instance is created using →→ `create_user_instance()`:**  
+- a new unique ID is generated for Léa →→ `generate_uuid()`  
+- creation/update timestamps are added to the database →→ `set_timestamps()`
+
+**6. Léa is saved to the database by `UserRepository` using →→ `save_user(user_instance)` via `INSERT INTO users VALUES (…)`.**
+
+**7. The server responds to the website that the registration was successful →→ `201 Created {user_id, message}`, and Léa can now log in.**
 
 **Example:** If “lea@gmail.com” already exists → error message is returned.
 
