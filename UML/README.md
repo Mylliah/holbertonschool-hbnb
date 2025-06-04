@@ -301,16 +301,17 @@ If Léa tries to rate the same place twice →→ check_existing_review finds an
 3. The controller calls the method `get_places(filter_criteria)` on `HBnBFacade`.  
 4. The facade asks `PlaceRepository` to search for all matching places:  
 With →→ `find_places_by_criteria(filters)` which executes `SELECT * FROM places WHERE country = ? AND city = ? AND ...`:  
-City = Fréjus  
-Price ≤ €100  
-Amenities include WiFi
+   - City = Fréjus  
+   - Price ≤ €100  
+   - Amenities include WiFi
 
 5. For each place found:  
-`AmenityRepository` retrieves the list of amenities with →→ `get_place_amenities(place_id)` via `SELECT amenities.* FROM amenities JOIN place_amenities ON ...`  
-`ReviewRepository` calculates the average rating and number of reviews with →→ `get_place_reviews_summary(place_id)` via `SELECT AVG(rating), COUNT(*) FROM reviews WHERE place_id = ?` (`GET /places` returns, by default, the average rating and review count for an enriched listing)
+   - `AmenityRepository` retrieves the list of amenities with →→ `get_place_amenities(place_id)` via `SELECT amenities.* FROM amenities JOIN place_amenities ON ...`  
+   - `ReviewRepository` calculates the average rating and number of reviews with →→ `get_place_reviews_summary(place_id)` via `SELECT AVG(rating), COUNT(*) FROM reviews WHERE place_id = ?` (`GET /places` returns, by default, the average rating and review count for an enriched listing)
 
 6. `HBnBFacade` compiles the results with →→ `compile_places_with_details()`.  
 7. The server returns the enriched list of places to the site, and Léa sees the results with prices, amenities, and ratings →→ `201 OK {places: [...]}`.
+
 
 **Example Displayed:**
 > “Cozy Studio, €90, WiFi, 4.7/5 stars (15 reviews)”
