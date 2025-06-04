@@ -244,9 +244,9 @@ _a user creates a new place listing_
 3. The controller calls the method `create_place(place_data, user_id)` on `HBnBFacade`.  
 4. The facade delegates to `PlaceModel` to perform validations:  
 With →→ `validate_place_data()`:
-- that the coordinates are valid (no latitude like 999!) →→ `validate_coordinates()`  
-- that the price is positive →→ `validate_price()`  
-- that the selected amenities actually exist in the database →→ `validate_amenities(amenity_ids)`
+  - that the coordinates are valid (no latitude like 999!) →→ `validate_coordinates()`  
+  - that the price is positive →→ `validate_price()`  
+  - that the selected amenities actually exist in the database →→ `validate_amenities(amenity_ids)`
 
 5. If everything is valid (`amenities_valid`), the place instance is created with →→ `create_place_instance()`:  
 - a new unique ID is generated for the place →→ `generate_uuid()`  
@@ -275,10 +275,10 @@ _a user submits a review for a place_
 2. The website sends the review to the server (API) via `POST /places/{place_id}/reviews`, handled by `ReviewController`.  
 3. The controller calls the method `create_review(review_data, user_id, place_id)` on `HBnBFacade`.  
 4. The facade checks:
-- that the place exists →→ `check_place_exists(place_id)` via `PlaceRepository` (`SELECT * FROM places WHERE id = ?`)  
-- that the user Léa exists in the database →→ `check_user_exists(user_id)` via `UserRepository`  
-- that Léa hasn’t already submitted a review for this place →→ `check_existing_review(user_id, place_id)` via `ReviewRepository` (`SELECT * FROM reviews WHERE user_id = ? AND place_id = ?`)  
-- that the rating is valid and between 1 and 5 →→ `validate_review_data()` via `ReviewModel`, then →→ `validate_rating(1-5)`
+  - that the place exists →→ `check_place_exists(place_id)` via `PlaceRepository` (`SELECT * FROM places WHERE id = ?`)  
+  - that the user Léa exists in the database →→ `check_user_exists(user_id)` via `UserRepository`  
+  - that Léa hasn’t already submitted a review for this place →→ `check_existing_review(user_id, place_id)` via `ReviewRepository` (`SELECT * FROM reviews WHERE user_id = ? AND place_id = ?`)  
+  - that the rating is valid and between 1 and 5 →→ `validate_review_data()` via `ReviewModel`, then →→ `validate_rating(1-5)`
 
 5. If everything is valid, the review instance is created with →→ `create_review_instance()`:  
 - a new unique ID is generated for the review →→ `generate_uuid()`  
