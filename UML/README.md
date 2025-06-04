@@ -291,24 +291,26 @@ If Léa tries to rate the same place twice →→ check_existing_review finds an
 
 ![Fetching](./Fetching_a_List_of_Places.png)
 
-### 4. 🔍 Fetching Places
+### 4. 🔍 Fetching Places: a user requests a list of places based on certain criteria
 
 > Léa searches for a place in Fréjus with WiFi and a budget under €100.
 
-1. She enters her filters → `GET /places?...`
-2. The request is handled by `PlaceController`
-3. Calls `get_places(criteria)` in `HBnBFacade`
-4. `PlaceRepository.find_places_by_criteria()` executes a DB query:
-   - City = Fréjus
-   - Max price = 100 €
-   - Amenities include WiFi
+**What happens technically, step by step:**  
+1. Léa enters her search criteria into the search engine (e.g.: city, max price, amenities, etc.).  
+2. The website sends the request to the server (API) via `GET /places?country=X&city=Y&housing_type=Z&min_price=A&max_price=B`, handled by `PlaceController`.  
+3. The controller calls the method `get_places(filter_criteria)` on `HBnBFacade`.  
+4. The facade asks `PlaceRepository` to search for all matching places:  
+With →→ `find_places_by_criteria(filters)` which executes `SELECT * FROM places WHERE country = ? AND city = ? AND ...`:  
+City = Fréjus  
+Price ≤ €100  
+Amenities include WiFi
 
-5. For each result:
-   - Get amenities with `AmenityRepository.get_place_amenities(place_id)`
-   - Get review summary with `ReviewRepository.get_place_reviews_summary(place_id)`
+5. For each place found:  
+`AmenityRepository` retrieves the list of amenities with →→ `get_place_amenities(place_id)` via `SELECT amenities.* FROM amenities JOIN place_amenities ON ...`  
+`ReviewRepository` calculates the average rating and number of reviews with →→ `get_place_reviews_summary(place_id)` via `SELECT AVG(rating), COUNT(*) FROM reviews WHERE place_id = ?` (`GET /places` returns, by default, the average rating and review count for an enriched listing)
 
-6. `HBnBFacade.compile_places_with_details()` merges everything
-7. Return: list of enriched places with price, rating, amenities → `200 OK`
+6. `HBnBFacade` compiles the results with →→ `compile_places_with_details()`.  
+7. The server returns the enriched list of places to the site, and Léa sees the results with prices, amenities, and ratings →→ `201 OK {places: [...]}`.
 
 **Example Displayed:**
 > “Cozy Studio, €90, WiFi, 4.7/5 stars (15 reviews)”
