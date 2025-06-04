@@ -212,13 +212,13 @@ _a user signs up for a new account_
 3. The controller calls `register_user()` in `HBnBFacade`
 4. The facade delegates to `UserModel` to perform checks:
 With →→ `validate_user_data()`:
-- that the email is properly formatted (e.g., no typos) →→ `check_email_format()`
-- that the password is strong enough →→ `hash_password()` which returns a hashed, unreadable, and thus secure version even if the database is compromised  
-- that the email is not already in use by someone else →→ `check_email_exists(email)`, by checking in the database via `UserRepository` (`SELECT * FROM users WHERE email = ?`)
+   - that the email is properly formatted (e.g., no typos) →→ `check_email_format()`
+   - that the password is strong enough →→ `hash_password()` which returns a hashed, unreadable, and thus secure version even if the database is compromised  
+   - that the email is not already in use by someone else →→ `check_email_exists(email)`, by checking in the database via `UserRepository` (`SELECT * FROM users WHERE email = ?`)
 
 5. If the email is available (`email_available`), a user instance is created using →→ `create_user_instance()`:  
-- a new unique ID is generated for Léa →→ `generate_uuid()`  
-- creation/update timestamps are added to the database →→ `set_timestamps()`
+   - a new unique ID is generated for Léa →→ `generate_uuid()`  
+   - creation/update timestamps are added to the database →→ `set_timestamps()`
 
 6. Léa is saved to the database by `UserRepository` using →→ `save_user(user_instance)` via `INSERT INTO users VALUES (…)`.
 
