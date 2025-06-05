@@ -207,7 +207,7 @@ _a user signs up for a new account_
 **The technical flow, step by step:**
 > Léa wants to sign up on HBnB.
 
-1. She fills in the form (email, password…)
+1. She fills in the form (`email`, `password`…)
 2. The website sends a `POST /users/registration` request
 3. The controller calls `register_user()` in `HBnBFacade`
 4. The facade delegates to `UserModel` to perform checks:  
@@ -300,7 +300,7 @@ _a user requests a list of places based on certain criteria_
 **The technical flow, step by step:**
 > Léa searches for a place in Fréjus with WiFi and a budget under €100.
   
-1. Léa enters her search criteria into the search engine (e.g.: city, max price, amenities, etc.).  
+1. Léa enters her search criteria into the search engine (e.g.: `city`, `max price`, `amenities`, etc.).  
 2. The website sends the request to the server (API) via `GET /places?country=X&city=Y&housing_type=Z&min_price=A&max_price=B`, handled by `PlaceController`.  
 3. The controller calls the method `get_places(filter_criteria)` on `HBnBFacade`.  
 4. The facade asks `PlaceRepository` to search for all matching places:  
