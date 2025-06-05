@@ -37,7 +37,7 @@ This diagram represents the technical organization of our **HBnB** application i
 - `ReviewController`: user reviews.
 - `AmenityController`: amenities (WiFi, pool, etc.).
 
-**In practical terms:**  
+**Concretely:** 
 When a user clicks a button, it's **one of these controllers** that receives the info and passes it to the system.
 
 ---
@@ -67,7 +67,7 @@ The controller **never speaks directly to a model**; it calls a method of the fa
 Each repository is specialized in data access for one model.
 - **Persistence calls**: low-level operations that directly interact with the database, typically through raw SQL queries or ORM methods.
 
-**In practice:**  
+**Concretely:**  
 When the business logic needs to save or retrieve an object, it goes through the corresponding repository, which handles communication with the database.
 
 ---
