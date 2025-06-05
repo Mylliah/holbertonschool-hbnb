@@ -10,7 +10,7 @@ The goal of this document is to provide a **clear and structured overview** of t
 
 Each diagram is accompanied by detailed explanations, so that everyone (developers, reviewers, POs, etc.) can understand the overall operation of the application.
 
----
+---      
 
 ## 📦 Architecture Diagram – Layered Architecture
 
