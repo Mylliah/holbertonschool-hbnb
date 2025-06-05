@@ -257,8 +257,7 @@ With → `validate_place_data()`:
 8. The server confirms to Paul that his place has been published → `201 Created {place_id, message}`.
 
 **Example:**  
-If Paul selects “WiFi” and “Pool” → the system checks if those amenities exist.  
-**AmenityRepository**  
+If Paul selects “WiFi” and “Pool” → the system checks if those amenities exist via **AmenityRepository**  
 If Paul enters a negative price or forgets the address, he receives an error message triggered by `validate_price()`
 
 ---
