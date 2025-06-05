@@ -211,22 +211,22 @@ _a user signs up for a new account_
 2. The website sends a `POST /users/registration` request
 3. The controller calls `register_user()` in `HBnBFacade`
 4. The facade delegates to `UserModel` to perform checks:
-With →→ `validate_user_data()`:
-   - that the email is properly formatted (e.g., no typos) →→ `check_email_format()`
-   - that the password is strong enough →→ `hash_password()` which returns a hashed, unreadable, and thus secure version even if the database is compromised  
-   - that the email is not already in use by someone else →→ `check_email_exists(email)`, by checking in the database via `UserRepository` (`SELECT * FROM users WHERE email = ?`)
+With → `validate_user_data()`:
+   - that the email is properly formatted (e.g., no typos) → `check_email_format()`
+   - that the password is strong enough → `hash_password()` which returns a hashed, unreadable, and thus secure version even if the database is compromised  
+   - that the email is not already in use by someone else → `check_email_exists(email)`, by checking in the database via `UserRepository` (`SELECT * FROM users WHERE email = ?`)
 
-5. If the email is available (`email_available`), a user instance is created using →→ `create_user_instance()`:  
-   - a new unique ID is generated for Léa →→ `generate_uuid()`  
-   - creation/update timestamps are added to the database →→ `set_timestamps()`
+5. If the email is available (`email_available`), a user instance is created using → `create_user_instance()`:  
+   - a new unique ID is generated for Léa → `generate_uuid()`  
+   - creation/update timestamps are added to the database → `set_timestamps()`
 
-6. Léa is saved to the database by `UserRepository` using →→ `save_user(user_instance)` via `INSERT INTO users VALUES (…)`.
+6. Léa is saved to the database by `UserRepository` using → `save_user(user_instance)` via `INSERT INTO users VALUES (…)`.
 
-7. The server responds to the website that the registration was successful →→ `201 Created {user_id, message}`, and Léa can now log in.
+7. The server responds to the website that the registration was successful → `201 Created {user_id, message}`, and Léa can now log in.
 
 **Example:**  
 Léa tries to register with “lea@gmail.com”
-- If this email already exists: she receives an error message “This email is already in use” →→ returned by `check_email_exists`.
+- If this email already exists: she receives an error message “This email is already in use” → returned by `check_email_exists`.
 - If everything is valid: she receives “Welcome to HBnB!” and her `user_id` is generated.
 
 ---
@@ -243,18 +243,18 @@ _a user creates a new place listing_
 2. The website sends the request to the API via `POST /places`, handled by `PlaceController`.  
 3. The controller calls the method `create_place(place_data, user_id)` on `HBnBFacade`.  
 4. The facade delegates to `PlaceModel` to perform validations:  
-With →→ `validate_place_data()`:
-   - that the coordinates are valid (no latitude like 999!) →→ `validate_coordinates()`  
-   - that the price is positive →→ `validate_price()`  
-   - that the selected amenities actually exist in the database →→ `validate_amenities(amenity_ids)`
+With → `validate_place_data()`:
+   - that the coordinates are valid (no latitude like 999!) → `validate_coordinates()`  
+   - that the price is positive → `validate_price()`  
+   - that the selected amenities actually exist in the database → `validate_amenities(amenity_ids)`
 
-5. If everything is valid (`amenities_valid`), the place instance is created with →→ `create_place_instance()`:  
-   - a new unique ID is generated for the place →→ `generate_uuid()`  
-   - creation/update timestamps are added to the database →→ `set_timestamps()`
+5. If everything is valid (`amenities_valid`), the place instance is created with → `create_place_instance()`:  
+   - a new unique ID is generated for the place → `generate_uuid()`  
+   - creation/update timestamps are added to the database → `set_timestamps()`
 
-6. The place is saved to the database by `PlaceRepository` using →→ `save_place(place_instance)`  
+6. The place is saved to the database by `PlaceRepository` using → `save_place(place_instance)`  
 7. The amenity/place associations are recorded in the database via `INSERT INTO place_amenities VALUES (…)`.  
-8. The server confirms to Paul that his place has been published →→ `201 Created {place_id, message}`.
+8. The server confirms to Paul that his place has been published → `201 Created {place_id, message}`.
 
 **Example:**  
 If Paul selects “WiFi” and “Pool” → the system checks if those amenities exist.  
@@ -275,20 +275,20 @@ _a user submits a review for a place_
 2. The website sends the review to the server (API) via `POST /places/{place_id}/reviews`, handled by `ReviewController`.  
 3. The controller calls the method `create_review(review_data, user_id, place_id)` on `HBnBFacade`.  
 4. The facade checks:
-   - that the place exists →→ `check_place_exists(place_id)` via `PlaceRepository` (`SELECT * FROM places WHERE id = ?`)  
-   - that the user Léa exists in the database →→ `check_user_exists(user_id)` via `UserRepository`  
-   - that Léa hasn’t already submitted a review for this place →→ `check_existing_review(user_id, place_id)` via `ReviewRepository` (`SELECT * FROM reviews WHERE user_id = ? AND place_id = ?`)  
-   - that the rating is valid and between 1 and 5 →→ `validate_review_data()` via `ReviewModel`, then →→ `validate_rating(1-5)`
+   - that the place exists → `check_place_exists(place_id)` via `PlaceRepository` (`SELECT * FROM places WHERE id = ?`)  
+   - that the user Léa exists in the database → `check_user_exists(user_id)` via `UserRepository`  
+   - that Léa hasn’t already submitted a review for this place → `check_existing_review(user_id, place_id)` via `ReviewRepository` (`SELECT * FROM reviews WHERE user_id = ? AND place_id = ?`)  
+   - that the rating is valid and between 1 and 5 → `validate_review_data()` via `ReviewModel`, then → `validate_rating(1-5)`
 
-5. If everything is valid, the review instance is created with →→ `create_review_instance()`:  
-   - a new unique ID is generated for the review →→ `generate_uuid()`  
-   - creation/update timestamps are added to the database →→ `set_timestamps()`
+5. If everything is valid, the review instance is created with → `create_review_instance()`:  
+   - a new unique ID is generated for the review → `generate_uuid()`  
+   - creation/update timestamps are added to the database → `set_timestamps()`
 
-6. The review is saved to the database by `ReviewRepository` using →→ `save_review(review_instance)` via `INSERT INTO reviews VALUES (…)`  
-7. The server responds: “Thank you for your review!” →→ `201 Created {review_id, message}`.
+6. The review is saved to the database by `ReviewRepository` using → `save_review(review_instance)` via `INSERT INTO reviews VALUES (…)`  
+7. The server responds: “Thank you for your review!” → `201 Created {review_id, message}`.
 
 **Example:**  
-If Léa tries to rate the same place twice →→ check_existing_review finds an existing review and returns an error: “You have already submitted a review.”
+If Léa tries to rate the same place twice → check_existing_review finds an existing review and returns an error: “You have already submitted a review.”
 
 ---
 
@@ -304,17 +304,17 @@ _a user requests a list of places based on certain criteria_
 2. The website sends the request to the server (API) via `GET /places?country=X&city=Y&housing_type=Z&min_price=A&max_price=B`, handled by `PlaceController`.  
 3. The controller calls the method `get_places(filter_criteria)` on `HBnBFacade`.  
 4. The facade asks `PlaceRepository` to search for all matching places:  
-With →→ `find_places_by_criteria(filters)` which executes `SELECT * FROM places WHERE country = ? AND city = ? AND ...`:  
+With → `find_places_by_criteria(filters)` which executes `SELECT * FROM places WHERE country = ? AND city = ? AND ...`:  
    - City = Fréjus  
    - Price ≤ €100  
    - Amenities include WiFi
 
 5. For each place found:  
-   - `AmenityRepository` retrieves the list of amenities with →→ `get_place_amenities(place_id)` via `SELECT amenities.* FROM amenities JOIN place_amenities ON ...`  
-   - `ReviewRepository` calculates the average rating and number of reviews with →→ `get_place_reviews_summary(place_id)` via `SELECT AVG(rating), COUNT(*) FROM reviews WHERE place_id = ?` (`GET /places` returns, by default, the average rating and review count for an enriched listing)
+   - `AmenityRepository` retrieves the list of amenities with → `get_place_amenities(place_id)` via `SELECT amenities.* FROM amenities JOIN place_amenities ON ...`  
+   - `ReviewRepository` calculates the average rating and number of reviews with → `get_place_reviews_summary(place_id)` via `SELECT AVG(rating), COUNT(*) FROM reviews WHERE place_id = ?` (`GET /places` returns, by default, the average rating and review count for an enriched listing)
 
-6. `HBnBFacade` compiles the results with →→ `compile_places_with_details()`.  
-7. The server returns the enriched list of places to the site, and Léa sees the results with prices, amenities, and ratings →→ `201 OK {places: [...]}`.
+6. `HBnBFacade` compiles the results with → `compile_places_with_details()`.  
+7. The server returns the enriched list of places to the site, and Léa sees the results with prices, amenities, and ratings → `201 OK {places: [...]}`.
 
 
 **Example Displayed:**
