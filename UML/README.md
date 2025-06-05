@@ -236,9 +236,9 @@ Léa tries to register with “lea@gmail.com”
 ### 2. 🏡 Place Creation
 _a user creates a new place listing_
 
+**The technical flow, step by step:**
 > Paul wants to publish his apartment in Fréjus.
-
-**What happens technically, step by step:**  
+  
 1. Paul fills out the form (`country`, `city`, `address`, `housing_type`, `room_count`, `description`, `price`, `latitude`, `longitude`, `amenities`).  
 2. The website sends the request to the API via `POST /places`, handled by `PlaceController`.  
 3. The controller calls the method `create_place(place_data, user_id)` on `HBnBFacade`.  
@@ -268,9 +268,9 @@ If Paul enters a negative price or forgets the address, he receives an error mes
 ### 3. ⭐ Review Submission
 _a user submits a review for a place_
 
+**The technical flow, step by step:**
 > Léa wants to leave a review on Paul’s place.
-
-**What happens technically, step by step:**  
+  
 1. Léa writes her review and gives a rating (`rating`, `commentary`) on the place's page.  
 2. The website sends the review to the server (API) via `POST /places/{place_id}/reviews`, handled by `ReviewController`.  
 3. The controller calls the method `create_review(review_data, user_id, place_id)` on `HBnBFacade`.  
@@ -297,9 +297,9 @@ If Léa tries to rate the same place twice → check_existing_review finds an ex
 ### 4. 🔍 Fetching Places
 _a user requests a list of places based on certain criteria_
 
+**The technical flow, step by step:**
 > Léa searches for a place in Fréjus with WiFi and a budget under €100.
-
-**What happens technically, step by step:**  
+  
 1. Léa enters her search criteria into the search engine (e.g.: city, max price, amenities, etc.).  
 2. The website sends the request to the server (API) via `GET /places?country=X&city=Y&housing_type=Z&min_price=A&max_price=B`, handled by `PlaceController`.  
 3. The controller calls the method `get_places(filter_criteria)` on `HBnBFacade`.  
@@ -315,7 +315,6 @@ With → `find_places_by_criteria(filters)` which executes `SELECT * FROM places
 
 6. `HBnBFacade` compiles the results with → `compile_places_with_details()`.  
 7. The server returns the enriched list of places to the site, and Léa sees the results with prices, amenities, and ratings → `201 OK {places: [...]}`.
-
 
 **Example Displayed:**
 > “Cozy Studio, €90, WiFi, 4.7/5 stars (15 reviews)”  
