@@ -37,7 +37,7 @@ This diagram represents the technical organization of our **HBnB** application i
 - `ReviewController`: user reviews.
 - `AmenityController`: amenities (WiFi, pool, etc.).
 
-**Concretely:** 
+**Concretely:**  
 When a user clicks a button, it's **one of these controllers** that receives the info and passes it to the system.
 
 ---
