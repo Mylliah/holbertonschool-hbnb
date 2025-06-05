@@ -12,11 +12,6 @@ Each diagram is accompanied by detailed explanations, so that everyone (develope
 
 ---
 
-
-
-
-
-
 ## 📦 Architecture Diagram – Layered Architecture
 
 ### 🧱 Three Layers, Three Roles
