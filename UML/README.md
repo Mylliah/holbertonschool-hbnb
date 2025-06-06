@@ -1,5 +1,12 @@
 # 🧾 Technical Documentation – HBnB Evolution Project
 
+### Navigation
+
+- [Introduction](#-introduction)
+- [Architecture Diagram – Layered Architecture](#-architecture-diagram--layered-architecture)
+- [Class Diagram – Business Logic Layer](#-class-diagram--business-logic-layer)
+- [Sequence Diagrams – API Calls](#-sequence-diagrams--api-calls)
+
 ---
 
 ## 🔰 Introduction
@@ -83,6 +90,8 @@ When the business logic needs to save or retrieve an object, it goes through the
 - Better organization (each part has its role)
 - Scalability (you can change the database without affecting logic)
 - Easier maintenance
+
+<p align="right"><a href="#navigation">↑ Back to Navigation</a></p>
 
 ---
 
@@ -188,6 +197,8 @@ It **simplifies access** to business features by centralizing logic calls.
   - `Place` contains multiple `Review` (if deleted → reviews are too)
 - **Multiple associations:**
   - `Place` uses multiple `Amenity` (and vice versa)
+
+<p align="right"><a href="#navigation">↑ Back to Navigation</a></p>
 
 ---
 
@@ -328,3 +339,5 @@ This document brings together everything needed to **understand, build, and main
 Each section (architecture, entities, sequences) was designed to be **readable and directly usable** by the technical team.
 
 > It’s now ready to serve as a **reference during development**, technical reviews, or even interviews.
+
+<p align="right"><a href="#navigation">↑ Back to Navigation</a></p>
