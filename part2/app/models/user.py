@@ -27,7 +27,8 @@ class User(BaseModel):
     - is_admin (bool) : droits administrateur (par défaut False)
     """
 
-    __slots__ = BaseModel.__slots__ + ('first_name', 'last_name', 'email', 'is_admin', 'places')
+    __slots__ = BaseModel.__slots__ + ('first_name', 'last_name', 'email',
+                                       'is_admin', 'places')
 
     def __init__(self, first_name, last_name, email, is_admin=False):
         """
