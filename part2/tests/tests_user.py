@@ -256,3 +256,20 @@ def test_user_equality_reference():
     assert user1 == user2
     assert user1 is not user3
     assert user1 != user3
+
+
+def test_user_equality_same_id():
+    """
+    Vérifie que deux instances de User avec le même id sont considérées égales.
+    """
+    user1 = User(first_name="Jyn", last_name="Erso", email="jyn@rogueone.org")
+    user2 = User(first_name="Cassian", last_name="Andor", email="cassian@rebellion.org")
+
+    # Forcer le même id
+    object.__setattr__(user2, "_id", user1.id)
+
+    print(f"[DEBUG] user1.id = {user1.id}")
+    print(f"[DEBUG] user2.id = {user2.id}")
+
+    assert user1 == user2
+    assert user1 is not user2

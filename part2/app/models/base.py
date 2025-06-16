@@ -58,6 +58,12 @@ class BaseModel:
     def created_at(self, value):
         raise AttributeError("created_at is immutable")
 
+    def __eq__(self, other):
+        """
+        Deux objets sont égaux s'ils ont le même identifiant.
+        """
+        return isinstance(other, self.__class__) and self.id == other.id
+
     def save(self):
         """
         Met à jour la date de dernière modification de l'objet.
