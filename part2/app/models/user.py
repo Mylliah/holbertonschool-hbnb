@@ -30,14 +30,14 @@ class User(BaseModel):
         Constructeur de la classe User.
 
         Paramètres :
-        - first_name (str) : prénom de l'utilisateur
-        (obligatoire, <= 50 caractères)
-        - last_name (str) : nom de l'utilisateur
-        (obligatoire, <= 50 caractères)
-        - email (str) : adresse e-mail
-        (obligatoire, format email standard attendu)
-        - is_admin (bool, optionnel) : booléen indiquant si l'utilisateur
-        est admin (défaut : False)
+        - first_name (str) :
+        prénom de l'utilisateur (obligatoire, <= 50 caractères)
+        - last_name (str) :
+        nom de l'utilisateur (obligatoire, <= 50 caractères)
+        - email (str) :
+        adresse e-mail (obligatoire, format email standard attendu)
+        - is_admin (bool, optionnel) :
+        booléen indiquant si l'utilisateur est admin (défaut : False)
 
         À faire :
         - Appeler le constructeur parent via super()
