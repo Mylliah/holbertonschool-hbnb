@@ -20,6 +20,8 @@ class Amenity(BaseModel):
     - name (str) : nom de la commodité (obligatoire, max 50 caractères)
     """
 
+    __slots__ = BaseModel.__slots__ + ('name',)
+
     def __init__(self, name):
         """
         Constructeur de la classe Amenity.

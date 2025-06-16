@@ -34,6 +34,17 @@ class Place(BaseModel):
     - amenities (list) : liste des commodités associées (instances Amenity)
     """
 
+    __slots__ = BaseModel.__slots__ + (
+        'title',
+        'description',
+        'price',
+        'latitude',
+        'longitude',
+        'owner',
+        'reviews',
+        'amenities'
+    )
+
     def __init__(self, title, description, price, latitude, longitude, owner):
         """
         Constructeur de la classe Place.

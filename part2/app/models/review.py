@@ -30,6 +30,8 @@ class Review(BaseModel):
     (doit être une instance de Place)
     """
 
+    __slots__ = BaseModel.__slots__ + ('text', 'rating', 'place', 'author')
+
     def __init__(self, text, rating, author, place):
         """
         Constructeur de la classe Review.
