@@ -30,15 +30,33 @@ class BaseModel:
     - update(data: dict) : met à jour les attributs depuis un dictionnaire
     """
 
-    __slots__ = ('id', 'created_at', 'updated_at')  # limitation explicite des attributs
+    __slots__ = ('_id', '_created_at', 'updated_at')  # limitation explicite des attributs
 
     def __init__(self):
         """
         Constructeur commun à toutes les entités métier.
         """
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
+        self._id = str(uuid.uuid4())
+        self._created_at = datetime.now()
         self.updated_at = datetime.now()
+
+    @property
+    def id(self):
+        """Accès en lecture à l'identifiant unique (lecture seule)."""
+        return self._id
+
+    @id.setter
+    def id(self, value):
+        raise AttributeError("id is immutable")
+
+    @property
+    def created_at(self):
+        """Accès en lecture à la date de création (lecture seule)."""
+        return self._created_at
+
+    @created_at.setter
+    def created_at(self, value):
+        raise AttributeError("created_at is immutable")
 
     def save(self):
         """
