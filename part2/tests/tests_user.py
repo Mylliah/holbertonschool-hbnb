@@ -37,7 +37,7 @@ def test_update_user_attribute():
     original_updated_at = user.updated_at
 
     # Pause pour observer une vraie différence temporelle
-    time.sleep(1)
+    time.sleep(3)
 
     # Modification d'un attribut
     user.first_name = "Han-Leader"
@@ -48,6 +48,45 @@ def test_update_user_attribute():
 
     assert user.first_name == "Han-Leader"
     assert user.updated_at > original_updated_at
+
+
+def test_user_update_method_on_valid_attribute():
+    """
+    Vérifie que la méthode update() modifie un attribut existant.
+    """
+    user = User(first_name="Padmé", last_name="Naberrie", email="padme@senate.org")
+    old_updated_at = user.updated_at
+
+    time.sleep(1)
+    user.update({"last_name": "Amidala"})
+
+    assert user.last_name == "Amidala"
+    assert user.updated_at > old_updated_at
+
+
+def test_user_update_method_ignores_unknown_attribute():
+    """
+    Vérifie que la méthode update() ignore les clés inconnues du dictionnaire.
+    """
+    user = User(first_name="Anakin", last_name="Skywalker", email="anakin@jedi.org")
+    user.update({"rank": "Knight"})
+
+    assert not hasattr(user, "rank")
+
+
+def test_user_update_multiple_fields():
+    """
+    Vérifie la mise à jour simultanée de plusieurs champs.
+    """
+    user = User(first_name="Ben", last_name="Kenobi", email="ben@jedi.org")
+
+    user.update({
+        "first_name": "Obi-Wan",
+        "email": "obiwan@jedi.org"
+    })
+
+    assert user.first_name == "Obi-Wan"
+    assert user.email == "obiwan@jedi.org"
 
 
 def test_user_creation_missing_fields():
@@ -156,3 +195,25 @@ def test_user_update_with_unknown_attribute():
     except AttributeError:
         print("[INFO] AttributeError correctly raised")
         assert True
+
+
+def test_user_id_and_created_at_immutability():
+    """
+    Vérifie que id et created_at ne doivent pas être modifiés après instanciation.
+    Ce test montre qu'une mutation est possible par défaut (comportement de Python),
+    mais qu'elle devrait être évitée dans un usage normal.
+    """
+    user = User(first_name="Cassian", last_name="Andor", email="cassian@rebellion.org")
+
+    original_id = user.id
+    original_created = user.created_at
+
+    # Tentative de modification
+    user.id = "FAKE-ID"
+    user.created_at = "3019-01-01 00:00:00"
+
+    print(f"[DEBUG] ID modifié : {user.id}")
+    print(f"[DEBUG] created_at modifié : {user.created_at}")
+
+    assert user.id != original_id, "ID should not be mutable (test volontairement FAIL)"
+    assert user.created_at != original_created, "created_at should not be mutable"
