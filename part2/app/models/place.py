@@ -63,7 +63,7 @@ class Place(BaseModel):
     def validate_title(self, value, field_name):
         """Valide un titre : type str, non vide, max 100 caractères."""
         if not isinstance(value, str):
-            raise ValueError(f"{field_name} must be a string")
+            raise TypeError(f"{field_name} must be a string")
         value = value.strip()
         if not value:
             raise ValueError(f"{field_name} is required")

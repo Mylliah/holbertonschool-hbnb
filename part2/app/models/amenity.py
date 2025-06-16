@@ -39,7 +39,7 @@ class Amenity(BaseModel):
         Valide le nom de la commodité : str non vide, max 50 caractères.
         """
         if not isinstance(value, str):
-            raise ValueError(f"{field_name} must be a string")
+            raise TypeError(f"{field_name} must be a string")
         value = value.strip()
         if not value:
             raise ValueError(f"{field_name} is required")

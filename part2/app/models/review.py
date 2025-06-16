@@ -53,7 +53,7 @@ class Review(BaseModel):
     def validate_text(self, value, field_name):
         """Valide le contenu du texte : str non vide, max 500 caractères."""
         if not isinstance(value, str):
-            raise ValueError(f"{field_name} must be a string")
+            raise TypeError(f"{field_name} must be a string")
         value = value.strip()
         if not value:
             raise ValueError(f"{field_name} is required")
@@ -64,7 +64,7 @@ class Review(BaseModel):
     def validate_rating(self, value, field_name):
         """Valide la note : int entre 1 et 5."""
         if not isinstance(value, int):
-            raise ValueError(f"{field_name} must be an integer")
+            raise TypeError(f"{field_name} must be an integer")
         if not (1 <= value <= 5):
             raise ValueError(f"{field_name} must be between 1 and 5")
         return value

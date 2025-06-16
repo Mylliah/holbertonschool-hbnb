@@ -51,7 +51,7 @@ class User(BaseModel):
         """Valide un nom (prénom ou nom) : type str, non vide,
         max 50 caractères."""
         if not isinstance(value, str):
-            raise ValueError(f"{field_name} must be a string")
+            raise TypeError(f"{field_name} must be a string")
         value = value.strip()
         if not value:
             raise ValueError(f"{field_name} is required")
@@ -62,11 +62,13 @@ class User(BaseModel):
     def validate_email(self, value):
         """Valide une adresse email : type str, non vide, format standard."""
         if not isinstance(value, str):
-            raise ValueError("Email must be a string")
+            raise TypeError("Email must be a string")
         value = value.strip().lower()
         if not value:
             raise ValueError("Email is required")
-        if not re.match(r"[^@]+@[^@]+\.[^@]+", value):
+        if value.count("@") != 1:
+            raise ValueError("Email must contain exactly one '@'")
+        if not re.match(r"^[^@]+@[^@]+\.[^@]+$", value):
             raise ValueError("Invalid email format")
         return value
 
