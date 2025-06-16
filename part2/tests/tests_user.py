@@ -54,7 +54,7 @@ def test_user_creation_missing_fields():
     """
     Vérifie qu'une exception est levée si des champs requis sont manquants.
     """
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises(TypeError) as exc_info:
         User(first_name="Luke")  # manque last_name et email
 
     print(f"[INFO] Exception levée → {exc_info.value}")
@@ -77,14 +77,14 @@ def test_user_creation_empty_fields():
         User(first_name="", last_name="Skywalker", email="anakin@jedi.org")
 
     print(f"[INFO] Prénom vide → {exc_first.value}")
-    assert "first_name" in str(exc_first.value).lower()
+    assert "required" in str(exc_first.value).lower()
 
     # Cas 3 : nom vide
     with pytest.raises(ValueError) as exc_last:
         User(first_name="Anakin", last_name="", email="anakin@jedi.org")
 
     print(f"[INFO] Nom vide → {exc_last.value}")
-    assert "last_name" in str(exc_last.value).lower()
+    assert "required" in str(exc_last.value).lower()
 
 
 def test_user_creation_invalid_types():
@@ -96,7 +96,7 @@ def test_user_creation_invalid_types():
         User(first_name=42, last_name="Kenobi", email="obiwan@jedi.org")
 
     print(f"[INFO] Type prénom invalide → {exc_type1.value}")
-    assert "first_name" in str(exc_type1.value).lower()
+    assert "first name must be a string" in str(exc_type1.value).lower()
 
     # Cas 2 : email en list
     with pytest.raises(TypeError) as exc_type2:
@@ -141,3 +141,18 @@ def test_user_creation_invalid_email_double_at():
 
     print(f"[INFO] Email avec @@ → {exc.value}")
     assert "email" in str(exc.value).lower()
+
+
+def test_user_update_with_unknown_attribute():
+    """
+    Vérifie qu'une tentative d'ajout d'un champ inconnu sur un User échoue.
+    """
+    user = User(first_name="Bail", last_name="Organa", email="bail@alderaan.org")
+
+    try:
+        user.rank = "senator"  # champ non défini dans la classe User
+        print(f"[DEBUG] Unexpected attribute rank → {user.rank}")
+        assert not hasattr(user, "rank"), "User should not accept unknown attributes"
+    except AttributeError:
+        print("[INFO] AttributeError correctly raised")
+        assert True

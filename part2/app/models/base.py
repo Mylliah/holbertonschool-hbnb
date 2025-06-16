@@ -30,6 +30,8 @@ class BaseModel:
     - update(data: dict) : met à jour les attributs depuis un dictionnaire
     """
 
+    __slots__ = ('id', 'created_at', 'updated_at')  # limitation explicite des attributs
+
     def __init__(self):
         """
         Constructeur commun à toutes les entités métier.
