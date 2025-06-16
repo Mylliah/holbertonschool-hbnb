@@ -83,3 +83,9 @@ class User(BaseModel):
             f"<User {self.id}: {self.first_name} {self.last_name} "
             f"({self.email})>"
         )
+
+    def __str__(self):
+        """
+        Retourne une représentation lisible : "Nom Complet (email)"
+        """
+        return f"{self.first_name} {self.last_name} ({self.email})"

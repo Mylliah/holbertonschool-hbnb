@@ -208,3 +208,51 @@ def test_user_id_and_created_at_immutability():
 
     with pytest.raises(AttributeError, match="created_at is immutable"):
         user.created_at = "3019-01-01 00:00:00"
+
+
+def test_user_str():
+    """
+    Vérifie que la représentation en chaîne (__str__) est correcte.
+    """
+    user = User(first_name="Lando", last_name="Calrissian", email="lando@cloudcity.org")
+    expected = "Lando Calrissian (lando@cloudcity.org)"
+    assert str(user) == expected
+
+
+def test_user_email_case_insensitive():
+    """
+    Vérifie que l'email est stocké en minuscules, même si saisi en majuscules.
+    """
+    user = User(first_name="Rex", last_name="CT-7567", email="REX@REPUBLIC.ORG")
+    assert user.email == "rex@republic.org"
+
+
+def test_user_update_does_not_add_invalid_keys():
+    """
+    Vérifie que .update() ignore les clés inconnues sans lever d'erreur.
+    """
+    user = User(first_name="Sabine", last_name="Wren", email="sabine@mandalore.org")
+    user.update({"faction": "Rebels"})  # attribut inconnu
+    assert not hasattr(user, "faction")
+
+
+def test_user_repr_contains_id_and_email():
+    """
+    Vérifie que __repr__ contient l'id et l'email (pour le debug).
+    """
+    user = User(first_name="Bo", last_name="Katan", email="bo@mandalore.org")
+    result = repr(user)
+    assert user.id in result
+    assert user.email in result
+
+
+def test_user_equality_reference():
+    """
+    Vérifie qu'un user n'est égal qu'à lui-même (par défaut en Python).
+    """
+    user1 = User(first_name="Hera", last_name="Syndulla", email="hera@ghost.org")
+    user2 = user1
+    user3 = User(first_name="Hera", last_name="Syndulla", email="hera@ghost.org")
+    assert user1 == user2
+    assert user1 is not user3
+    assert user1 != user3
