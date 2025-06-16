@@ -1,2 +1,3 @@
 flask
 flask-restx
+pytest 8.4.0
