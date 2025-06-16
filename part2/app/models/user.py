@@ -5,8 +5,10 @@ Cette classe hérite de BaseModel et ajoute les attributs spécifiques
 liés à l'identité de l'utilisateur.
 """
 
-# 📦 Imports nécessaires
+# Imports nécessaires
 # BaseModel : classe de base commune
+# re : regex pour la vérification du mail
+import re
 from models.base import BaseModel
 
 
@@ -38,22 +40,42 @@ class User(BaseModel):
         adresse e-mail (obligatoire, format email standard attendu)
         - is_admin (bool, optionnel) :
         booléen indiquant si l'utilisateur est admin (défaut : False)
-
-        À faire :
-        - Appeler le constructeur parent via super()
-        - Vérifier que les chaînes ne sont pas vides
-        - Vérifier que les longueurs de `first_name` et `last_name` ne dépassent pas 50
-        - Affecter les valeurs aux attributs
-        - (Facultatif) Vérifier que l'e-mail contient au moins un "@" pour validation minimale
         """
-        pass  # 🛠️ À implémenter
+        super().__init__()
+        self.first_name = self.validate_name(first_name, "First name")
+        self.last_name = self.validate_name(last_name, "Last name")
+        self.email = self.validate_email(email)
+        self.is_admin = bool(is_admin)
 
-    def __str__(self):
-        """
-        Représentation en chaîne lisible pour le debug.
+    def validate_name(self, value, field_name):
+        """Valide un nom (prénom ou nom) : type str, non vide,
+        max 50 caractères."""
+        if not isinstance(value, str):
+            raise ValueError(f"{field_name} must be a string")
+        value = value.strip()
+        if not value:
+            raise ValueError(f"{field_name} is required")
+        if len(value) > 50:
+            raise ValueError(f"{field_name} must be at most 50 characters")
+        return value
 
-        À faire :
-        - Retourner une chaîne affichant le prénom, le nom et l’e-mail
-          Exemple : "<User John Doe - john.doe@example.com>"
+    def validate_email(self, value):
+        """Valide une adresse email : type str, non vide, format standard."""
+        if not isinstance(value, str):
+            raise ValueError("Email must be a string")
+        value = value.strip().lower()
+        if not value:
+            raise ValueError("Email is required")
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", value):
+            raise ValueError("Invalid email format")
+        return value
+
+    def __repr__(self):
         """
-        pass  # 🛠️ Optionnel, mais recommandé pour les tests
+        Représentation technique de l'utilisateur, utile pour le debug.
+        Exemple : <User 78c1... - john.doe@example.com>
+        """
+        return (
+            f"<User {self.id}: {self.first_name} {self.last_name} "
+            f"({self.email})>"
+        )
