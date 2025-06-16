@@ -1,7 +1,8 @@
 """models/user.py
 
 Définit la classe User, représentant un utilisateur dans l'application HBnB.
-Cette classe hérite de BaseModel et ajoute les attributs spécifiques liés à l'identité de l'utilisateur.
+Cette classe hérite de BaseModel et ajoute les attributs spécifiques
+liés à l'identité de l'utilisateur.
 """
 
 # 📦 Imports nécessaires
@@ -17,7 +18,8 @@ class User(BaseModel):
     - BaseModel : fournit id, created_at, updated_at
 
     Attributs spécifiques :
-    - first_name (str) : prénom de l'utilisateur (obligatoire, max 50 caractères)
+    - first_name (str) : prénom de l'utilisateur
+    (obligatoire, max 50 caractères)
     - last_name (str) : nom de l'utilisateur (obligatoire, max 50 caractères)
     - email (str) : adresse e-mail (obligatoire, unique, format email standard)
     - is_admin (bool) : droits administrateur (par défaut False)
@@ -28,10 +30,14 @@ class User(BaseModel):
         Constructeur de la classe User.
 
         Paramètres :
-        - first_name (str) : prénom de l'utilisateur (obligatoire, <= 50 caractères)
-        - last_name (str) : nom de l'utilisateur (obligatoire, <= 50 caractères)
-        - email (str) : adresse e-mail (obligatoire, format email standard attendu)
-        - is_admin (bool, optionnel) : booléen indiquant si l'utilisateur est admin (défaut : False)
+        - first_name (str) : prénom de l'utilisateur
+        (obligatoire, <= 50 caractères)
+        - last_name (str) : nom de l'utilisateur
+        (obligatoire, <= 50 caractères)
+        - email (str) : adresse e-mail
+        (obligatoire, format email standard attendu)
+        - is_admin (bool, optionnel) : booléen indiquant si l'utilisateur
+        est admin (défaut : False)
 
         À faire :
         - Appeler le constructeur parent via super()
