@@ -199,21 +199,12 @@ def test_user_update_with_unknown_attribute():
 
 def test_user_id_and_created_at_immutability():
     """
-    Vérifie que id et created_at ne doivent pas être modifiés après instanciation.
-    Ce test montre qu'une mutation est possible par défaut (comportement de Python),
-    mais qu'elle devrait être évitée dans un usage normal.
+    Vérifie que id et created_at ne peuvent plus être modifiés (grâce à @property).
     """
     user = User(first_name="Cassian", last_name="Andor", email="cassian@rebellion.org")
 
-    original_id = user.id
-    original_created = user.created_at
+    with pytest.raises(AttributeError, match="id is immutable"):
+        user.id = "FAKE-ID"
 
-    # Tentative de modification
-    user.id = "FAKE-ID"
-    user.created_at = "3019-01-01 00:00:00"
-
-    print(f"[DEBUG] ID modifié : {user.id}")
-    print(f"[DEBUG] created_at modifié : {user.created_at}")
-
-    assert user.id != original_id, "ID should not be mutable (test volontairement FAIL)"
-    assert user.created_at != original_created, "created_at should not be mutable"
+    with pytest.raises(AttributeError, match="created_at is immutable"):
+        user.created_at = "3019-01-01 00:00:00"
