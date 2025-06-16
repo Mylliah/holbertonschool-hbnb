@@ -1,9 +1,9 @@
 """models/base.py
 
 Définit la classe de base pour toutes les entités métier de l'application HBnB.
-Cette classe centralise les attributs communs et fournit des méthodes utilitaires
-telles que la sauvegarde (mise à jour de `updated_at`) et la mise à jour d'attributs
-à partir d'un dictionnaire.
+Cette classe centralise les attributs communs et fournit des méthodes
+utilitaires telles que la sauvegarde (mise à jour de `updated_at`)
+et la mise à jour d'attributs à partir d'un dictionnaire.
 
 Toutes les entités (User, Place, Review, Amenity) hériteront de cette classe.
 """
