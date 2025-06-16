@@ -7,7 +7,7 @@ spécifiques à un avis.
 """
 
 # Import de la classe de base
-from models.base import BaseModel
+from app.models.base import BaseModel
 
 # Import des classes nécessaires pour les validations de type
 from app.models.user import User

@@ -6,6 +6,7 @@ Teste la création de l'entité User (valeurs valides uniquement).
 import pytest
 import time
 from app.models.user import User
+from app.models.place import Place
 
 
 def test_create_valid_user():
@@ -273,3 +274,38 @@ def test_user_equality_same_id():
 
     assert user1 == user2
     assert user1 is not user2
+
+
+def test_user_place_relationship():
+    """
+    Vérifie que l'on peut associer plusieurs Place à un User.
+    """
+    user = User(first_name="Padmé", last_name="Naberrie", email="padme@senate.repub")
+
+    place1 = Place(
+        title="Appartement de Naboo",
+        description="Résidence royale avec vue sur le lac",
+        price=250,
+        latitude=44.5,
+        longitude=6.2,
+        owner=user
+    )
+
+    place2 = Place(
+        title="Refuge de Varykino",
+        description="Maison de vacances familiale dans les montagnes de Naboo",
+        price=300,
+        latitude=45.0,
+        longitude=6.5,
+        owner=user
+    )
+
+    assert place1.owner == user
+    assert place2.owner == user
+
+    user.places.append(place1)
+    user.places.append(place2)
+
+    assert len(user.places) == 2
+    assert place1 in user.places
+    assert place2 in user.places

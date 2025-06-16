@@ -10,8 +10,6 @@ spécifiques liés à un lieu.
 from app.models.base import BaseModel
 # Importer le modèle User pour vérifier le type du propriétaire
 from app.models.user import User
-# Importer le modèle User pour vérifier le type de review
-from app.models.review import Review
 # Importer le modèle User pour vérifier le type de amenity
 from app.models.amenity import Amenity
 
@@ -115,6 +113,9 @@ class Place(BaseModel):
     def validate_review(self, value, field_name):
         """
         Valide un objet Review : doit être une instance de la classe Review."""
+        # Importer le modèle User pour vérifier le type de review
+        # Import local pour casser la boucle
+        from app.models.review import Review
         if not isinstance(value, Review):
             raise TypeError(f"{field_name} must be an instance of Review")
         return value
