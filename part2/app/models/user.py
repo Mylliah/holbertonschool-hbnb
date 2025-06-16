@@ -9,7 +9,7 @@ liés à l'identité de l'utilisateur.
 # BaseModel : classe de base commune
 # re : regex pour la vérification du mail
 import re
-from models.base import BaseModel
+from app.models.base import BaseModel
 
 
 class User(BaseModel):

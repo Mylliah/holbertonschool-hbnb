@@ -6,7 +6,7 @@ Cette classe hérite de BaseModel.
 """
 
 # Import de la classe de base
-from models.base import BaseModel
+from app.models.base import BaseModel
 
 
 class Amenity(BaseModel):

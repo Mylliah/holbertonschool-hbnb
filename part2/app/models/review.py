@@ -10,8 +10,8 @@ spécifiques à un avis.
 from models.base import BaseModel
 
 # Import des classes nécessaires pour les validations de type
-from models.user import User
-from models.place import Place
+from app.models.user import User
+from app.models.place import Place
 
 
 class Review(BaseModel):

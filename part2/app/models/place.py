@@ -7,13 +7,13 @@ spécifiques liés à un lieu.
 
 # Imports nécessaires
 # BaseModel : classe de base commune
-from models.base import BaseModel
+from app.models.base import BaseModel
 # Importer le modèle User pour vérifier le type du propriétaire
-from models.user import User
+from app.models.user import User
 # Importer le modèle User pour vérifier le type de review
-from models.review import Review
+from app.models.review import Review
 # Importer le modèle User pour vérifier le type de amenity
-from models.amenity import Amenity
+from app.models.amenity import Amenity
 
 
 class Place(BaseModel):
