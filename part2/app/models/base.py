@@ -83,3 +83,14 @@ class BaseModel:
             if hasattr(self, key):
                 setattr(self, key, value)
         self.save()  # met à jour `updated_at`
+
+    def to_dict(self):
+        result = {}
+        for slot in self.__slots__:
+            value = getattr(self, slot)
+            if isinstance(value, datetime):
+                result[slot] = value.isoformat()
+            else:
+                result[slot] = value
+        result['__class__'] = self.__class__.__name__
+        return result

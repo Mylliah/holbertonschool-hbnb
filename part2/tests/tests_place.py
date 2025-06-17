@@ -333,3 +333,128 @@ def test_create_place_with_invalid_price_type():
     with pytest.raises(TypeError) as e5:
         Place(title=title, description=description, price={"value": 200}, latitude=latitude, longitude=longitude, owner=owner)
     print("Erreur attendue (price = dict) :", e5.value)
+
+
+def test_update_place_with_invalid_title_type():
+    """
+    Vérifie qu'une TypeError est levée si on met à jour title avec un type non str.
+    """
+    owner = User(first_name="Ahsoka", last_name="Tano", email="ahsoka@fulcrum.org")
+    place = Place(
+        title="Temple Jedi",
+        description="Lieu d'entraînement mystique",
+        price=180.0,
+        latitude=40.0,
+        longitude=10.0,
+        owner=owner
+    )
+
+    # Cas 1 : title = int
+    with pytest.raises(TypeError) as e1:
+        place.update(title=123)
+    print("Erreur attendue (update title = int) :", e1.value)
+
+    # Cas 2 : title = float
+    with pytest.raises(TypeError) as e2:
+        place.update(title=3.14)
+    print("Erreur attendue (update title = float) :", e2.value)
+
+    # Cas 3 : title = list
+    with pytest.raises(TypeError) as e3:
+        place.update(title=["Maison de repos"])
+    print("Erreur attendue (update title = list) :", e3.value)
+
+    # Cas 4 : title = None
+    with pytest.raises(TypeError) as e4:
+        place.update(title=None)
+    print("Erreur attendue (update title = None) :", e4.value)
+
+
+def test_place_repr_format():
+    """
+    Vérifie que __repr__ retourne une chaîne du type : <Place id: title>
+    """
+    owner = User(first_name="Mon", last_name="Mothma", email="mon@mothma.org")
+    place = Place(
+        title="Base Rebelle",
+        description="Lieu secret sur Yavin 4",
+        price=200.0,
+        latitude=25.0,
+        longitude=13.3,
+        owner=owner
+    )
+
+    result = repr(place)
+    print("Sortie de __repr__() :", result)
+
+    assert isinstance(result, str)
+    assert result.startswith("<Place ")
+    assert place.id in result
+    assert place.title in result
+
+
+def test_place_str_format():
+    """
+    Vérifie que __str__ retourne une chaîne lisible contenant les infos clés du lieu.
+    """
+    owner = User(first_name="Obi-Wan", last_name="Kenobi", email="kenobi@jedi.org")
+    place = Place(
+        title="Temple Jedi",
+        description="Lieu sacré",
+        price=300.0,
+        latitude=40.0,
+        longitude=10.0,
+        owner=owner
+    )
+
+    result = str(place)
+    print("Sortie de __str__() :\n", result)
+
+    assert isinstance(result, str)
+    assert "[Place]" in result
+    assert place.title in result
+    assert str(place.price) in result
+    assert str(place.latitude) in result
+    assert str(place.longitude) in result
+    assert owner.first_name in result
+    assert owner.last_name in result
+    assert owner.email in result
+
+
+def test_place_update_modifies_attributes():
+    """
+    Vérifie que update() modifie les champs existants avec des valeurs valides.
+    """
+    owner = User(first_name="Jyn", last_name="Erso", email="jyn@rebellion.org")
+    place = Place(
+        title="Cache rebelle",
+        description="Ancien entrepôt de la Résistance",
+        price=150.0,
+        latitude=44.0,
+        longitude=6.0,
+        owner=owner
+    )
+
+    # Mise à jour des champs valides
+    place.update(
+        title="QG temporaire",
+        description="Base secrète sur Scarif",
+        price=200.0,
+        latitude=45.5,
+        longitude=7.5
+    )
+
+    # Affichage après modification
+    print("Place après update :")
+    print("title      :", place.title)
+    print("description:", place.description)
+    print("price      :", place.price)
+    print("latitude   :", place.latitude)
+    print("longitude  :", place.longitude)
+
+    # Vérifications
+    assert place.title == "QG temporaire"
+    assert place.description == "Base secrète sur Scarif"
+    assert place.price == 200.0
+    assert place.latitude == 45.5
+    assert place.longitude == 7.5
