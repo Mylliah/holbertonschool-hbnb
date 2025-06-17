@@ -1,4 +1,5 @@
 import pytest
+import time
 from datetime import datetime
 from app.models.place import Place
 from app.models.user import User
@@ -128,5 +129,35 @@ def test_str_method_of_amenity():
     # Vérifie que la chaîne retournée est correcte
     assert isinstance(str_output, str)
     assert str_output == "Commodité : Piscine"
+
+
+def test_update_name_of_amenity():
+    """
+    Vérifie que la modification du nom met bien à jour updated_at,
+    et conserve un nom valide.
+    """
+
+    amenity = Amenity("Climatisation")
+    old_updated_at = amenity.updated_at
+
+    print(">>> Avant modification :")
+    print("- name =", amenity.name)
+    print("- updated_at =", old_updated_at)
+
+    # Pause pour observer un vrai changement temporel
+    time.sleep(3)
+
+    # Modification du nom
+    amenity.name = "Chauffage"
+    new_updated_at = amenity.updated_at
+
+    print(">>> Après modification :")
+    print("- name =", amenity.name)
+    print("- updated_at =", new_updated_at)
+
+    # Vérifications
+    assert amenity.name == "Chauffage"
+    assert isinstance(new_updated_at, datetime)
+    assert new_updated_at > old_updated_at
 
 

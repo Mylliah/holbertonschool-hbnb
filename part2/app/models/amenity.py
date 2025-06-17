@@ -20,7 +20,7 @@ class Amenity(BaseModel):
     - name (str) : nom de la commodité (obligatoire, max 50 caractères)
     """
 
-    __slots__ = BaseModel.__slots__ + ('name',)
+    __slots__ = BaseModel.__slots__ + ('_name',)
 
     def __init__(self, name):
         """
@@ -30,7 +30,16 @@ class Amenity(BaseModel):
         - name (str) : nom de la commodité (ex: "Wi-Fi", "Parking")
         """
         super().__init__()
-        self.name = self.validate_name(name, "Name")
+        self._name = self.validate_name(name, "Name")
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        self._name = self.validate_name(value, "Name")
+        self.touch()  # méthode héritée de BaseModel pour mettre à jour updated_at
 
     # ==========================
     # MÉTHODE DE VALIDATION
