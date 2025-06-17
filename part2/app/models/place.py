@@ -91,7 +91,7 @@ class Place(BaseModel):
 
     def validate_price(self, value, field_name):
         """Valide un prix : type float ou int, strictement positif."""
-        if not isinstance(value, (float, int)):
+        if isinstance(value, bool) or not isinstance(value, (float, int)):
             raise TypeError(f"{field_name} must be an int or a float")
         if value <= 0:
             raise ValueError(f"{field_name} must be greater than 0")
