@@ -36,9 +36,10 @@ class BaseModel:
         """
         Constructeur commun à toutes les entités métier.
         """
+        now = datetime.now(timezone.utc)
         self._id = str(uuid.uuid4())
-        self._created_at = datetime.now()
-        self.updated_at = datetime.now()
+        self._created_at = now
+        self.updated_at = now
 
     def touch(self):
         """Met à jour updated_at à l'heure actuelle en UTC (aware)."""
@@ -72,7 +73,7 @@ class BaseModel:
         """
         Met à jour la date de dernière modification de l'objet.
         """
-        self.updated_at = datetime.now()
+        self.updated_at = datetime.now(timezone.utc)
 
     def update(self, data):
         """
