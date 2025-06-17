@@ -12,7 +12,7 @@ Toutes les entités (User, Place, Review, Amenity) hériteront de cette classe.
 # uuid : pour générer un identifiant unique (UUID v4) sous forme de chaîne
 # datetime : pour générer les horodatages de création et mise à jour
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class BaseModel:
@@ -39,6 +39,10 @@ class BaseModel:
         self._id = str(uuid.uuid4())
         self._created_at = datetime.now()
         self.updated_at = datetime.now()
+
+    def touch(self):
+        """Met à jour updated_at à l'heure actuelle en UTC (aware)."""
+        self.updated_at = datetime.now(timezone.utc)
 
     @property
     def id(self):
