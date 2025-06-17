@@ -174,5 +174,6 @@ class Place(BaseModel):
             f"Description: {self.description}\n"
             f"Price: {self.price} credits/night\n"
             f"Location: ({self.latitude}, {self.longitude})\n"
-            f"Owner: {self.owner.first_name} {self.owner.last_name} ({self.owner.email})"
+            f"Owner: {self.owner.first_name} {self.owner.last_name}\n"
+            f"({self.owner.email})"
         )
