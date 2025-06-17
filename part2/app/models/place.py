@@ -57,7 +57,8 @@ class Place(BaseModel):
         """
         super().__init__()
         self.title = self.validate_title(title, "Title")
-        self.description = self.validate_description(description, "Description")
+        self.description = self.validate_description(description,
+                                                     "Description")
         self.price = self.validate_price(price, "Price")
         self.latitude = self.validate_latitude(latitude, "Latitude")
         self.longitude = self.validate_longitude(longitude, "Longitude")
@@ -160,6 +161,27 @@ class Place(BaseModel):
         """
         self.validate_amenity(amenity, "Amenity")
         self.amenities.append(amenity)
+
+    def update(self, **kwargs):
+        """
+        Met à jour les attributs de l'instance Place en validant chaque champ.
+        """
+        for key, value in kwargs.items():
+            if key == "title":
+                self.title = self.validate_title(value, "Title")
+            elif key == "description":
+                self.description = self.validate_description(value,
+                                                             "Description")
+            elif key == "price":
+                self.price = self.validate_price(value, "Price")
+            elif key == "latitude":
+                self.latitude = self.validate_latitude(value, "Latitude")
+            elif key == "longitude":
+                self.longitude = self.validate_longitude(value, "Longitude")
+            elif key == "owner":
+                self.owner = self.validate_owner(value, "Owner")
+
+        self.save()  # met à jour updated_at
 
     def __repr__(self):
         """
