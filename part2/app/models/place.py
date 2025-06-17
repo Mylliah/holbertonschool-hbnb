@@ -57,7 +57,7 @@ class Place(BaseModel):
         """
         super().__init__()
         self.title = self.validate_title(title, "Title")
-        self.description = description
+        self.description = self.validate_description(description, "Description")
         self.price = self.validate_price(price, "Price")
         self.latitude = self.validate_latitude(latitude, "Latitude")
         self.longitude = self.validate_longitude(longitude, "Longitude")
@@ -78,6 +78,15 @@ class Place(BaseModel):
             raise ValueError(f"{field_name} is required")
         if len(value) > 100:
             raise ValueError(f"{field_name} must be at most 100 characters")
+        return value
+
+    def validate_description(self, value, field_name):
+        """Valide une description : type str, non vide."""
+        if not isinstance(value, str):
+            raise TypeError(f"{field_name} must be a string")
+        value = value.strip()
+        if not value:
+            raise ValueError(f"{field_name} is required")
         return value
 
     def validate_price(self, value, field_name):
@@ -160,8 +169,10 @@ class Place(BaseModel):
         return f"<Place {self.id}: {self.title}>"
 
     def __str__(self):
-        """
-        Retourne une représentation lisible du lieu : "Titre – Prix€/nuit"
-        Exemple : "Appartement lumineux – 95.0€/nuit"
-        """
-        return f"{self.title} – {self.price}€/nuit"
+        return (
+            f"[Place] {self.title} ({self.id})\n"
+            f"Description: {self.description}\n"
+            f"Price: {self.price} credits/night\n"
+            f"Location: ({self.latitude}, {self.longitude})\n"
+            f"Owner: {self.owner.first_name} {self.owner.last_name} ({self.owner.email})"
+        )

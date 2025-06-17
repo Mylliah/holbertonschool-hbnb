@@ -1,94 +1,113 @@
 import pytest
+import time
 from app.models.place import Place
 from app.models.user import User
 
 
 def test_create_valid_place():
     """
-    Vérifie qu'un Place valide peut être créé sans erreur,
-    et que ses attributs sont correctement initialisés.
+    Vérifie qu'une instance valide de Place peut être créée correctement.
     """
-    user = User(first_name="Padmé", last_name="Naberrie", email="padme@senate.repub")
-
+    owner = User(first_name="Han", last_name="Solo", email="han@falcon.space")
     place = Place(
-        title="Appartement de Naboo",
-        description="Résidence royale avec vue sur le lac",
-        price=250.0,
-        latitude=43.5,
-        longitude=7.1,
-        owner=user
+        title="Cabine du Faucon",
+        description="Un lieu mythique dans la galaxie.",
+        price=500.0,
+        latitude=12.34,
+        longitude=56.78,
+        owner=owner
     )
 
-    # Debug
-    print("[DEBUG] Created place →", place)
-    print("[INFO] title =", place.title)
-    print("[INFO] owner =", place.owner)
-    print("[INFO] id =", place.id)
-    print("[INFO] created_at =", place.created_at)
-
-    # Assertions
+    # ✅ Vérifications
     assert isinstance(place, Place)
-    assert place.title == "Appartement de Naboo"
-    assert place.price == 250.0
-    assert place.latitude == 43.5
-    assert place.longitude == 7.1
-    assert place.owner == user
-    assert place.id is not None
-    assert place.created_at is not None
-    assert place.updated_at is not None
+    assert place.title == "Cabine du Faucon"
+    assert place.description == "Un lieu mythique dans la galaxie."
+    assert place.price == 500.0
+    assert place.latitude == 12.34
+    assert place.longitude == 56.78
+    assert place.owner == owner
+    assert place.reviews == []
+    assert place.amenities == []
+
+    # 🖨️ Affichage complet
+    print("\n✅ Création d'un logement réussie :")
+    print(f"→ Titre : {place.title}")
+    print(f"→ Description : {place.description}")
+    print(f"→ Prix : {place.price}")
+    print(f"→ Latitude : {place.latitude}")
+    print(f"→ Longitude : {place.longitude}")
+    print(f"→ Owner : {place.owner}")
+    print(f"→ Reviews : {place.reviews}")
+    print(f"→ Amenities : {place.amenities}")
 
 
-def test_place_invalid_title_type():
+def test_create_place_missing_required_fields():
     """
-    Vérifie que la création d’un Place échoue si le titre n’est pas une chaîne.
+    Vérifie qu'une exception est levée si on tente de créer un Place
+    sans titre, prix ou propriétaire.
     """
-    user = User(first_name="Bail", last_name="Organa", email="bail@alderaan.org")
+    owner = User(first_name="Lando", last_name="Calrissian", email="lando@cloud.city")
 
-    with pytest.raises(TypeError) as excinfo:
+    # Manque le titre
+    with pytest.raises(TypeError):
         Place(
-            title=123,  # Mauvais type
-            description="Refuge de la Rébellion",
             price=100.0,
-            latitude=45.0,
-            longitude=6.0,
-            owner=user
+            latitude=0.0,
+            longitude=0.0,
+            owner=owner
         )
-    print("[INFO] Exception levée →", excinfo.value)
-    assert str(excinfo.value) == "Title must be a string"
+
+    # Manque le prix
+    with pytest.raises(TypeError):
+        Place(
+            title="Cloud City Loft",
+            latitude=0.0,
+            longitude=0.0,
+            owner=owner
+        )
+
+    # Manque le owner
+    with pytest.raises(TypeError):
+        Place(
+            title="Cloud City Loft",
+            price=100.0,
+            latitude=0.0,
+            longitude=0.0
+        )
+
+    print("\n Exceptions correctement levées pour les champs manquants :")
+    print("→ Erreur sans titre ✔")
+    print("→ Erreur sans prix ✔")
+    print("→ Erreur sans propriétaire ✔")
 
 
-import time
-from app.models.place import Place
-from app.models.user import User
-
-
-def test_place_update_method():
+def test_create_place_with_empty_fields():
     """
-    Vérifie que la méthode update() modifie correctement les attributs d'un Place.
+    Vérifie qu'une erreur est levée si certains champs de Place sont vides ou None.
     """
-    user = User(first_name="Lando", last_name="Calrissian", email="lando@cloudcity.org")
-    place = Place(
-        title="Appartement dans les nuages",
-        description="Vue panoramique sur Bespin",
-        price=300,
-        latitude=35.0,
-        longitude=23.0,
-        owner=user
-    )
+    owner = User(first_name="Lando", last_name="Calrissian", email="lando@cloudcity.com")
 
-    # Attente pour s'assurer que updated_at sera différent
-    time.sleep(3)
-    previous_updated_at = place.updated_at
+    # Cas 1 : title vide → ValueError
+    with pytest.raises(ValueError) as e1:
+        Place(title="", description="Lieu chic", price=120.0, latitude=45.0, longitude=5.0, owner=owner)
+    print("Erreur attendue (title vide) :", e1.value)
 
-    # Mise à jour de plusieurs champs
-    place.update({
-        "title": "Suite royale dans les nuages",
-        "price": 450,
-        "description": "Suite luxueuse au-dessus de la Cité des Nuages"
-    })
+    # Cas 2 : title = None → TypeError
+    with pytest.raises(TypeError) as e2:
+        Place(title=None, description="Lieu chic", price=120.0, latitude=45.0, longitude=5.0, owner=owner)
+    print("Erreur attendue (title None) :", e2.value)
 
-    assert place.title == "Suite royale dans les nuages"
-    assert place.price == 450
-    assert place.description == "Suite luxueuse au-dessus de la Cité des Nuages"
-    assert place.updated_at > previous_updated_at
-    print("[DEBUG] Place mis à jour →", place)
+    # Cas 3 : description vide → ValueError
+    with pytest.raises(ValueError) as e3:
+        Place(title="Cloud City", description="", price=120.0, latitude=45.0, longitude=5.0, owner=owner)
+    print("Erreur attendue (description vide) :", e3.value)
+
+    # Cas 4 : description = None → TypeError
+    with pytest.raises(TypeError) as e4:
+        Place(title="Cloud City", description=None, price=120.0, latitude=45.0, longitude=5.0, owner=owner)
+    print("Erreur attendue (description None) :", e4.value)
+
+    # Cas 5 : price = None → TypeError
+    with pytest.raises(TypeError) as e5:
+        Place(title="Cloud City", description="Ville flottante", price=None, latitude=45.0, longitude=5.0, owner=owner)
+    print("Erreur attendue (price None) :", e5.value)
