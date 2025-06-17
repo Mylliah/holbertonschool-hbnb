@@ -59,3 +59,10 @@ class Amenity(BaseModel):
         Exemple : <Amenity 78c1... - Wi-Fi>
         """
         return f"<Amenity {self.id}: {self.name}>"
+
+    def __str__(self):
+        """
+        Affichage lisible d'une commodité.
+        Exemple : Commodité : Wi-Fi
+        """
+        return f"Commodité : {self.name}"
