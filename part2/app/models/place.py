@@ -158,3 +158,10 @@ class Place(BaseModel):
         Exemple : <Place 78c1... - Cozy Apartment>
         """
         return f"<Place {self.id}: {self.title}>"
+
+    def __str__(self):
+        """
+        Retourne une représentation lisible du lieu : "Titre – Prix€/nuit"
+        Exemple : "Appartement lumineux – 95.0€/nuit"
+        """
+        return f"{self.title} – {self.price}€/nuit"
