@@ -2,6 +2,8 @@ import pytest
 import time
 from app.models.place import Place
 from app.models.user import User
+from app.models.review import Review
+from app.models.amenity import Amenity
 
 
 def test_create_valid_place():
@@ -458,3 +460,235 @@ def test_place_update_modifies_attributes():
     assert place.price == 200.0
     assert place.latitude == 45.5
     assert place.longitude == 7.5
+
+
+def test_update_place_ignores_unknown_keys():
+    """
+    Vérifie que update() ignore les clés inconnues sans lever d'exception.
+    """
+    owner = User(first_name="Lando", last_name="Calrissian", email="lando@bespin.org")
+    place = Place(
+        title="Refuge du contrebandier",
+        description="Niché dans les nuages",
+        price=500.0,
+        latitude=12.0,
+        longitude=34.0,
+        owner=owner
+    )
+
+    print("Avant update :")
+    print("title :", place.title)
+    print("hasattr(place, 'categorie') :", hasattr(place, "categorie"))
+    print("hasattr(place, 'climatiseur') :", hasattr(place, "climatiseur"))
+
+    # Mise à jour avec des clés inconnues
+    place.update(categorie="haut standing", climatiseur=True)
+
+    print("\nAprès update avec clés inconnues :")
+    print("title :", place.title)
+    print("hasattr(place, 'categorie') :", hasattr(place, "categorie"))
+    print("hasattr(place, 'climatiseur') :", hasattr(place, "climatiseur"))
+
+    # Vérifications
+    assert not hasattr(place, "categorie")
+    assert not hasattr(place, "climatiseur")
+    assert place.title == "Refuge du contrebandier"
+
+
+def test_update_place_with_invalid_value_types():
+    """
+    Vérifie qu'une exception est levée si update() reçoit des valeurs de type incorrect.
+    """
+    owner = User(first_name="Boba", last_name="Fett", email="boba@slave1.com")
+    place = Place(
+        title="Chambre froide",
+        description="Parfait pour stocker des primes",
+        price=750.0,
+        latitude=40.0,
+        longitude=8.0,
+        owner=owner
+    )
+
+    print("Avant update :")
+    print("title :", place.title)
+    print("price :", place.price)
+
+    # Cas 1 : title est un entier
+    try:
+        place.update(title=12345)
+    except Exception as e:
+        print("\nException attendue pour title (int) :", type(e).__name__, "-", e)
+
+    # Cas 2 : price est une chaîne
+    try:
+        place.update(price="gratuit")
+    except Exception as e:
+        print("\nException attendue pour price (str) :", type(e).__name__, "-", e)
+
+    # Vérifie que les données n'ont pas été altérées
+    assert place.title == "Chambre froide"
+    assert place.price == 750.0
+
+
+def test_place_identity_and_equality_same_instance():
+    """
+    Test 18 – Deux objets identiques (même instance) sont égaux :
+    Vérifie que deux variables pointant vers le même objet Place sont
+    à la fois égales (==) et identiques (is).
+    """
+    owner = User(first_name="Cassian", last_name="Andor", email="cassian@rebellion.org")
+    place = Place(
+        title="Refuge secret",
+        description="Abri en zone isolée",
+        price=120.0,
+        latitude=42.0,
+        longitude=5.0,
+        owner=owner
+    )
+
+    # Création d’une seconde référence pointant vers le même objet
+    same_place = place
+
+    print("=== Affichage des deux références ===")
+    print(f"place id: {id(place)}")
+    print(f"same_place id: {id(same_place)}")
+
+    # Vérifie identité mémoire
+    assert same_place is place, "Les deux références devraient pointer vers le même objet"
+
+    # Vérifie égalité logique
+    assert same_place == place, "Les deux objets devraient être considérés comme égaux"
+
+
+def test_place_equality_same_id_different_objects():
+    """
+    Test 19 – Deux objets différents avec le même id sont considérés égaux.
+    Vérifie que la méthode __eq__ fonctionne selon l’ID logique, même si ce
+    sont des instances distinctes en mémoire.
+    """
+    owner1 = User(first_name="Saw", last_name="Gerrera", email="saw@partisans.org")
+    owner2 = User(first_name="Saw", last_name="Gerrera", email="saw@partisans.org")
+
+    # Création de deux objets différents
+    place1 = Place(
+        title="Caverne de Jedha",
+        description="Cache secrète des Partisans",
+        price=90.0,
+        latitude=33.5,
+        longitude=35.5,
+        owner=owner1
+    )
+
+    place2 = Place(
+        title="Caverne clonée",
+        description="Même lieu, autre objet",
+        price=90.0,
+        latitude=33.5,
+        longitude=35.5,
+        owner=owner2
+    )
+
+    # On force manuellement le même id
+    place2._id = place1.id
+
+    print("=== Comparaison logique ===")
+    print(f"place1 id : {id(place1)} / place1 UUID : {place1.id}")
+    print(f"place2 id : {id(place2)} / place2 UUID : {place2.id}")
+
+    # Ils ne sont pas identiques (pas la même instance)
+    assert place1 is not place2, "Ce sont deux objets différents"
+
+    # Mais ils doivent être égaux car id est identique
+    assert place1 == place2, "__eq__ doit retourner True si les id sont égaux"
+
+
+def test_place_owner_is_user():
+    """
+    Test 20 – Le propriétaire est bien un objet User.
+    Vérifie que la relation Place → User est correctement initialisée.
+    """
+    owner = User(first_name="Cassian", last_name="Andor", email="cassian@rebellion.org")
+
+    place = Place(
+        title="Cache de Ferrix",
+        description="Appartement discret près du marché",
+        price=180.0,
+        latitude=48.9,
+        longitude=2.4,
+        owner=owner
+    )
+
+    print("=== Vérification de la relation Place → User ===")
+    print(f"Type de owner : {type(place.owner)}")
+    print(f"Prénom : {place.owner.first_name}")
+    print(f"Nom : {place.owner.last_name}")
+    print(f"Email : {place.owner.email}")
+
+    assert isinstance(place.owner, User), "Le propriétaire doit être un objet User"
+    assert place.owner.first_name == "Cassian"
+    assert place.owner.last_name == "Andor"
+    assert place.owner.email == "cassian@rebellion.org"
+
+
+def test_place_accepts_multiple_reviews():
+    """
+    Test 21 – Ajout de plusieurs Review à un Place.
+    Vérifie que Place.reviews accepte plusieurs objets Review.
+    """
+    owner = User(first_name="Mon", last_name="Mothma", email="mon@senat.org")
+    author1 = User(first_name="Bail", last_name="Organa", email="bail@alderaan.org")
+    author2 = User(first_name="Leia", last_name="Organa", email="leia@rebellion.org")
+
+    place = Place(
+        title="Résidence secrète",
+        description="Appartement de soutien à la Rébellion",
+        price=400.0,
+        latitude=50.0,
+        longitude=4.0,
+        owner=owner
+    )
+
+    review1 = Review(text="Excellent lieu stratégique", rating=5, author=author1, place=place)
+    review2 = Review(text="Confort et discrétion", rating=4, author=author2, place=place)
+
+    place.add_review(review1)
+    place.add_review(review2)
+
+    print("=== Reviews liées au Place ===")
+    for i, review in enumerate(place.reviews, start=1):
+        print(f"Review {i} – {review.text} par {review.author.first_name}")
+
+    assert len(place.reviews) == 2, "Le lieu devrait avoir 2 reviews"
+    assert place.reviews[0] == review1
+    assert place.reviews[1] == review2
+
+
+def test_place_accepts_multiple_amenities():
+    """
+    Test 22 – Ajout de plusieurs Amenity à un Place.
+    Vérifie que Place.amenities accepte plusieurs objets Amenity.
+    """
+    owner = User(first_name="Padmé", last_name="Naberrie", email="padme@senat.org")
+
+    place = Place(
+        title="Villa de Theed",
+        description="Résidence sécurisée avec vue sur les cascades",
+        price=900.0,
+        latitude=31.2,
+        longitude=35.6,
+        owner=owner
+    )
+
+    amenity1 = Amenity(name="Holo-net")
+    amenity2 = Amenity(name="Bacta Tank privé")
+
+    place.add_amenity(amenity1)
+    place.add_amenity(amenity2)
+
+    print("=== Commodités liées au Place ===")
+    for i, a in enumerate(place.amenities, start=1):
+        print(f"Amenity {i} – {a.name}")
+
+    assert len(place.amenities) == 2, "Le lieu devrait avoir 2 commodités"
+    assert place.amenities[0] == amenity1
+    assert place.amenities[1] == amenity2
