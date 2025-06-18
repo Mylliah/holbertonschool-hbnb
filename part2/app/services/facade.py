@@ -16,7 +16,7 @@ class HBnBFacade:
     # Gestion de User
     # ==========================
 
-    # Méthode placeholder pour créer un user
+    # Récupération d'un utilisateur par ID
     def get_user(self, user_id):
         """
         Récupère un utilisateur par son identifiant.
@@ -101,11 +101,14 @@ class HBnBFacade:
         """
         Crée un nouveau lieu à partir d'un dictionnaire de données.
         Exige : title, description, price, latitude, longitude, owner_id.
+        Optionnel : amenities (liste d'objets Amenity ou d'ID)
         """
         try:
             owner = self.user_repo.get(place_data["owner_id"])
             if not owner:
                 raise ValueError("Owner not found")
+
+            amenities = place_data.get("amenities", [])
 
             place = Place(
                 title=place_data["title"],
@@ -115,6 +118,16 @@ class HBnBFacade:
                 longitude=place_data["longitude"],
                 owner=owner
             )
+
+            # Ajout des commodités si elles sont valides
+            for amenity in amenities:
+                if isinstance(amenity, Amenity):
+                    place.add_amenity(amenity)
+                elif isinstance(amenity, str):  # ID de l’amenity
+                    a = self.amenity_repo.get(amenity)
+                    if a:
+                        place.add_amenity(a)
+
             self.place_repo.add(place)
             return place
 
@@ -127,21 +140,58 @@ class HBnBFacade:
         """
         return self.place_repo.get(place_id)
 
+    def get_place_by_title(self, title):
+        """
+        Recherche un lieu par son titre exact (sensible à la casse).
+        Retourne l'objet Place ou None si non trouvé.
+        """
+        return next(
+            (place for place in self.place_repo.get_all() if place.title == title),
+            None
+        )
+
     def get_all_places(self):
         """
         Retourne la liste de tous les lieux enregistrés.
         """
         return self.place_repo.get_all()
 
+    def get_places_by_user(self, user_id):
+        """
+        Retourne la liste des lieux appartenant à un utilisateur donné.
+        Utile pour afficher tous les logements d’un hôte.
+        """
+        return [
+            place for place in self.place_repo.get_all()
+            if place.owner and place.owner.id == user_id
+        ]
+
     def update_place(self, place_id, update_data):
         """
         Met à jour un lieu existant avec les données fournies.
+        Les commodités peuvent être mises à jour via la clé 'amenities'.
         """
         place = self.get_place(place_id)
         if not place:
             raise ValueError(f"Place with ID {place_id} not found")
 
+        # Séparation de la liste des amenities, si présente
+        amenities = update_data.pop("amenities", None)
+
+        # Mise à jour des autres champs (title, price, etc.)
         place.update(**update_data)
+
+        # Mise à jour des amenities si fournie
+        if amenities is not None:
+            place.amenities.clear()
+            for amenity in amenities:
+                if isinstance(amenity, Amenity):
+                    place.add_amenity(amenity)
+                elif isinstance(amenity, str):
+                    a = self.amenity_repo.get(amenity)
+                    if a:
+                        place.add_amenity(a)
+
         self.place_repo.add(place)
         return place
 
@@ -214,7 +264,7 @@ class HBnBFacade:
     # Gestion de Review
     # ==========================
 
-    # Méthode placeholder pour récupérer un review par ID
+    # Création d'un nouvel avis utilisateur
     def create_review(self, review_data):
         """
         Crée un nouvel avis à partir d'un dictionnaire de données.
@@ -254,6 +304,34 @@ class HBnBFacade:
         Retourne la liste de tous les avis enregistrés.
         """
         return self.review_repo.get_all()
+
+    def get_reviews_by_place(self, place_id):
+        """
+        Retourne la liste des avis associés à un lieu donné.
+        Retourne [] si aucun.
+        """
+        return [
+            review for review in self.review_repo.get_all()
+            if review.place and review.place.id == place_id
+        ]
+
+    def update_review(self, review_id, update_data):
+        """
+        Met à jour le texte et/ou la note d'un avis existant.
+        Ne modifie ni l’auteur ni le lieu associé.
+        """
+        review = self.get_review(review_id)
+        if not review:
+            raise ValueError(f"Review with ID {review_id} not found")
+
+        if "text" in update_data:
+            review.text = review.validate_text(update_data["text"], "Text")
+
+        if "rating" in update_data:
+            review.rating = review.validate_rating(update_data["rating"], "Rating")
+
+        self.review_repo.add(review)
+        return review
 
     def delete_review(self, review_id):
         """
