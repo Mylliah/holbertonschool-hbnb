@@ -7,8 +7,7 @@ api = Namespace('users', description='User operations')
 user_input_model = api.model('UserInput', {
     'first_name': fields.String(required=True, description='First name of the user'),
     'last_name': fields.String(required=True, description='Last name of the user'),
-    'email': fields.String(required=True, description='Email of the user'),
-    'password': fields.String(required=True, description='Password of the user', min_length=6)
+    'email': fields.String(required=True, description='Email of the user')
 })
 
 # Modèle de sortie (hérite du modèle d'entrée + id)
