@@ -96,3 +96,14 @@ class Review(BaseModel):
             f"<Review {self.id}: rating={self.rating}, "
             f"author={self.author.id}>"
         )
+
+    def __str__(self):
+        """
+    Représentation lisible d’un Review, utile pour l'affichage simple.
+    Exemple :
+    [Review] Leia Organa sur Tatooine : 5⭐ - "Un lieu incroyable !"
+    """
+        return (
+            f"[Review] {self.author.first_name} {self.author.last_name} "
+            f"sur {self.place.title} : {self.rating}⭐ - \"{self.text}\""
+        )
