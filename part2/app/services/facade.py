@@ -17,12 +17,46 @@ class HBnBFacade:
     # ==========================
 
     # Méthode placeholder pour créer un user
+    def get_user(self, user_id):
+        """
+        Récupère un utilisateur par son identifiant.
+        Retourne l'objet User ou None si non trouvé.
+        """
+        return self.user_repo.get(user_id)
+
+    def get_user_by_id(self, user_id):
+        """
+        Alias explicite de get_user pour répondre à certains besoins métier/API.
+        """
+        return self.get_user(user_id)
+
+    def get_user_by_email(self, email):
+        """
+        Recherche un utilisateur par adresse e-mail.
+        Retourne l'objet User correspondant ou None si non trouvé.
+        """
+        return next(
+            (user for user in self.user_repo.get_all() if user.email == email),
+            None
+        )
+
+    def get_all_users(self):
+        """
+        Retourne la liste de tous les utilisateurs.
+        """
+        return self.user_repo.get_all()
+
     def create_user(self, user_data):
         """
         Crée un nouvel utilisateur à partir d'un dictionnaire de données.
         Exige : first_name, last_name, email (is_admin est optionnel).
-        Lève une ValueError si les données sont invalides.
+        Vérifie que l'e-mail n'est pas déjà utilisé.
+        Lève une ValueError si doublon ou données invalides.
         """
+        # Vérifie l'unicité de l'e-mail
+        if self.get_user_by_email(user_data["email"]):
+            raise ValueError("Email already registered")
+
         try:
             user = User(
                 first_name=user_data["first_name"],
@@ -34,19 +68,6 @@ class HBnBFacade:
             return user
         except (KeyError, TypeError, ValueError) as e:
             raise ValueError(f"Invalid user data: {e}")
-
-    def get_user(self, user_id):
-        """
-        Récupère un utilisateur par son identifiant.
-        Retourne l'objet User ou None si non trouvé.
-        """
-        return self.user_repo.get(user_id)
-
-    def get_all_users(self):
-        """
-        Retourne la liste de tous les utilisateurs.
-        """
-        return self.user_repo.get_all()
 
     def update_user(self, user_id, update_data):
         """
