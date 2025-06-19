@@ -12,7 +12,6 @@ HBnBFacade.
 from flask_restx import Namespace, Resource, fields
 from flask import request
 from app.services import facade  # Accès à la couche métier
-from app.api.v1.users import user_output_model
 from app.api.v1.reviews import review_output_model
 
 # ===================================================
@@ -184,6 +183,14 @@ class PlaceResource(Resource):
                         "id": amenity.id,
                         "name": amenity.name
                     } for amenity in place.amenities
+                ],
+                "reviews": [
+                    {
+                        "id": review.id,
+                        "text": review.text,
+                        "rating": review.rating,
+                        "created_at": review.created_at
+                    } for review in place.reviews
                 ]
             }, 200
 
