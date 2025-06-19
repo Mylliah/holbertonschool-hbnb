@@ -138,7 +138,14 @@ class HBnBFacade:
         """
         Récupère un lieu par son identifiant.
         """
-        return self.place_repo.get(place_id)
+        place = self.place_repo.get(place_id)
+        if not place:
+            return None
+
+        reviews = self.get_reviews_by_place(place_id)
+        place.reviews = reviews
+
+        return place
 
     def get_place_by_title(self, title):
         """
@@ -350,3 +357,22 @@ class HBnBFacade:
 
         self.review_repo.delete(review_id)
         return True
+
+    def get_reviews_by_user(self, user_id):
+        """
+        Retourne la liste des avis rédigés par un utilisateur donné.
+        """
+        return [
+            review for review in self.review_repo.get_all()
+            if review.author and review.author.id == user_id
+        ]
+
+    def get_average_rating_for_place(self, place_id):
+        """
+        Calcule la moyenne des notes pour un lieu donné.
+        Retourne None si aucun avis.
+        """
+        reviews = self.get_reviews_by_place(place_id)
+        if not reviews:
+            return None
+        return sum(r.rating for r in reviews) / len(reviews)

@@ -26,18 +26,22 @@ class UserList(Resource):
         """Register a new user"""
         user_data = api.payload
 
-        # Check email uniqueness
+        # Vérifie l'unicité de l'email
         existing_user = facade.get_user_by_email(user_data['email'])
         if existing_user:
             api.abort(400, 'Email already registered')
 
-        new_user = facade.create_user(user_data)
-        return new_user, 201
+        try:
+            new_user = facade.create_user(user_data)
+            return new_user, 201
+        except (ValueError, TypeError) as e:
+            # Si les données sont invalides (ex : email malformé)
+            api.abort(400, str(e))
 
     @api.marshal_list_with(user_output_model)
     def get(self):
         """List all users"""
-        return facade.get_all_users(), 200
+        return facade.get_users(), 200
 
 @api.route('/<user_id>')
 class UserResource(Resource):
