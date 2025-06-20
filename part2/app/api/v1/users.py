@@ -12,7 +12,8 @@ user_input_model = api.model('UserInput', {
 
 # Modèle de sortie (hérite du modèle d'entrée + id)
 user_output_model = api.inherit('UserOutput', user_input_model, {
-    'id': fields.String(readonly=True, description='User ID')
+    'id': fields.String(readonly=True, description='User ID'),
+    'is_admin': fields.Boolean(description='Whether the user is an admin')
 })
 
 @api.route('/')
