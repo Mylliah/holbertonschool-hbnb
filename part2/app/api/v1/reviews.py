@@ -11,8 +11,12 @@ review_model = api.model('Review', {
     'place_id': fields.String(required=True, description='ID of the place')
 })
 
-review_output_model = api.inherit('ReviewOut', review_model, {
-    'id': fields.String(readonly=True, description='Review ID')
+review_output_model = api.model('ReviewOut', {
+    'id': fields.String(readonly=True, description='Review ID'),
+    'text': fields.String(required=True, description='Text of the review'),
+    'rating': fields.Integer(required=True, description='Rating of the place (1-5)', min=1, max=5),
+    'user_id': fields.String(attribute='user_id', description='ID of the author (User)'),
+    'place_id': fields.String(attribute='place_id', description='ID of the place')
 })
 
 message_model = api.model('Message', {
@@ -57,11 +61,12 @@ class ReviewResource(Resource):
     @api.response(200, 'Review updated successfully')
     @api.response(404, 'Review not found')
     @api.response(400, 'Invalid input data')
+    @api.marshal_with(review_output_model)
     def put(self, review_id):
         """Update a review's information"""
         try:
             updated = facade.update_review(review_id, api.payload)
-            return updated, 200
+            return updated
         except ValueError as e:
             msg = str(e)
             if msg.endswith('not found'):

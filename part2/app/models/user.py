@@ -28,7 +28,7 @@ class User(BaseModel):
     """
 
     __slots__ = BaseModel.__slots__ + ('first_name', 'last_name', 'email',
-                                       'is_admin', 'places')
+                                       'is_admin', 'places', 'reviews')
 
     def __init__(self, first_name, last_name, email, is_admin=False):
         """
@@ -50,6 +50,7 @@ class User(BaseModel):
         self.email = self.validate_email(email)
         self.is_admin = bool(is_admin)
         self.places = []  # ← Relation un-à-plusieurs : User → [Place]
+        self.reviews = []  # <-- Ajoute cette ligne
 
     def validate_name(self, value, field_name):
         """Valide un nom (prénom ou nom) : type str, non vide,

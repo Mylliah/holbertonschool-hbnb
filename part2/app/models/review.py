@@ -47,6 +47,8 @@ class Review(BaseModel):
         self.rating = self.validate_rating(rating, "Rating")
         self.author = self.validate_author(author, "Author")
         self.place = self.validate_place(place, "Place")
+        author.reviews.append(self)
+        place.reviews.append(self)
 
     # ==========================
     # MÉTHODES DE VALIDATION
@@ -84,6 +86,20 @@ class Review(BaseModel):
         return value
 
     # ==========================
+    # PROPRIÉTÉS PUBLIQUES
+    # ==========================
+
+    @property
+    def user_id(self):
+        """Permet d'exposer l'ID de l'auteur via 'user_id' dans l'API."""
+        return self.author.id if self.author else None
+
+    @property
+    def place_id(self):
+        """Permet d'exposer l'ID du lieu via 'place_id' dans l'API."""
+        return self.place.id if self.place else None
+
+    # ==========================
     # MÉTHODE TECHNIQUE
     # ==========================
 
@@ -107,3 +123,18 @@ class Review(BaseModel):
             f"[Review] {self.author.first_name} {self.author.last_name} "
             f"sur {self.place.title} : {self.rating}⭐ - \"{self.text}\""
         )
+
+    def to_dict(self):
+        """
+        Sérialise l'objet Review sous forme de dictionnaire utilisable par
+        Flask/JSON.
+        """
+        return {
+            "id": self.id,
+            "text": self.text,
+            "rating": self.rating,
+            "user_id": self.user_id,
+            "place_id": self.place_id,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat()
+        }
