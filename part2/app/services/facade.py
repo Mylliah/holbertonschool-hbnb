@@ -82,15 +82,17 @@ class HBnBFacade:
         self.user_repo.add(user)  # réécriture dans le stockage
         return user
 
+    """ A activer plus tard
     def delete_user(self, user_id):
-        """
+
         Supprime un utilisateur par son identifiant.
         Retourne True si suppression réussie, False sinon.
-        """
+
         if self.get_user(user_id):
             self.user_repo.delete(user_id)
             return True
         return False
+    """
 
     # ==========================
     # Gestion de Place
@@ -146,7 +148,8 @@ class HBnBFacade:
         Retourne l'objet Place ou None si non trouvé.
         """
         return next(
-            (place for place in self.place_repo.get_all() if place.title == title),
+            (place for place in self.place_repo.get_all() if place.title ==
+             title),
             None
         )
 
@@ -166,6 +169,15 @@ class HBnBFacade:
             if place.owner and place.owner.id == user_id
         ]
 
+    def get_places_by_owner(self, owner_id):
+        """
+        Retourne tous les lieux appartenant à un propriétaire donné.
+        """
+        return [
+            p for p in self.place_repo.get_all()
+            if hasattr(p, "owner") and p.owner and p.owner.id == owner_id
+        ]
+
     def update_place(self, place_id, update_data):
         """
         Met à jour un lieu existant avec les données fournies.
@@ -175,13 +187,19 @@ class HBnBFacade:
         if not place:
             raise ValueError(f"Place with ID {place_id} not found")
 
-        # Séparation de la liste des amenities, si présente
+        # - Vérification de conflit sur le titre
+        if "title" in update_data and update_data["title"] != place.title:
+            for other_place in self.get_places_by_owner(place.owner.id):
+                if other_place.id != place.id and other_place.title == update_data["title"]:
+                    raise ValueError("Title already used by this owner")
+
+        # - Séparation de la liste des amenities, si présente
         amenities = update_data.pop("amenities", None)
 
-        # Mise à jour des autres champs (title, price, etc.)
+        # - Mise à jour des autres champs
         place.update(**update_data)
 
-        # Mise à jour des amenities si fournie
+        # - Mise à jour des amenities si fournie
         if amenities is not None:
             place.amenities.clear()
             for amenity in amenities:
@@ -195,15 +213,17 @@ class HBnBFacade:
         self.place_repo.add(place)
         return place
 
+    """ A activer plus tard
     def delete_place(self, place_id):
-        """
+    
         Supprime un lieu par son identifiant.
         Retourne True si suppression réussie, False sinon.
-        """
+
         if self.get_place(place_id):
             self.place_repo.delete(place_id)
             return True
         return False
+    """
 
     # ==========================
     # Gestion de Amenity
@@ -212,15 +232,11 @@ class HBnBFacade:
     # Gestion des commodités (Amenity)
     def create_amenity(self, amenity_data):
         """
-        Crée une nouvelle commodité à partir d'un dictionnaire de données.
-        Exige : name (obligatoire).
+        Crée une nouvelle commodité.
         """
-        try:
-            amenity = Amenity(name=amenity_data["name"])
-            self.amenity_repo.add(amenity)
-            return amenity
-        except (KeyError, TypeError, ValueError) as e:
-            raise ValueError(f"Invalid amenity data: {e}")
+        amenity = Amenity(**amenity_data)
+        self.amenity_repo.add(amenity)
+        return amenity
 
     def get_amenity(self, amenity_id):
         """
@@ -236,29 +252,24 @@ class HBnBFacade:
 
     def update_amenity(self, amenity_id, update_data):
         """
-        Met à jour le nom d'une commodité existante.
-        Exige une clé 'name' dans update_data.
+        Met à jour une commodité existante.
+
+        Soulève une erreur si l'amenity n'existe pas.
         """
+        # - Récupération de l'amenity ciblée
         amenity = self.get_amenity(amenity_id)
         if not amenity:
+            # - Déclenchement d'une erreur claire si l'ID est inconnu
             raise ValueError(f"Amenity with ID {amenity_id} not found")
 
-        if "name" not in update_data:
-            raise ValueError("Missing 'name' in update data")
+        # - Mise à jour des champs
+        for key, value in update_data.items():
+            setattr(amenity, key, value)
 
-        amenity.name = update_data["name"]  # setter avec validation intégrée
-        self.amenity_repo.add(amenity)
+        # - Mise à jour dans le repo
+        self.amenity_repo.update(amenity_id, update_data)
+
         return amenity
-
-    def delete_amenity(self, amenity_id):
-        """
-        Supprime une commodité par son identifiant.
-        Retourne True si suppression réussie, False sinon.
-        """
-        if self.get_amenity(amenity_id):
-            self.amenity_repo.delete(amenity_id)
-            return True
-        return False
 
     # ==========================
     # Gestion de Review
@@ -268,12 +279,13 @@ class HBnBFacade:
     def create_review(self, review_data):
         """
         Crée un nouvel avis à partir d'un dictionnaire de données.
-        Exige : text, rating, author_id, place_id.
+        Exige : text, rating, user_id, place_id.
         """
         try:
-            author = self.user_repo.get(review_data["author_id"])
-            if not author:
-                raise ValueError("Author not found")
+            # correspondance avec le champ attendu par Swagger
+            user = self.user_repo.get(review_data["user_id"])
+            if not user:
+                raise ValueError("User not found")
 
             place = self.place_repo.get(review_data["place_id"])
             if not place:
@@ -282,12 +294,14 @@ class HBnBFacade:
             review = Review(
                 text=review_data["text"],
                 rating=review_data["rating"],
-                author=author,
+                author=user,  # l’attribut dans Review reste "author"
                 place=place
             )
+
             self.review_repo.add(review)
-            place.add_review(review)  # synchronisation relationnelle
-            self.place_repo.add(place)  # re-save du lieu avec la review liée
+            place.add_review(review)      # synchronisation relationnelle
+            self.place_repo.add(place)    # re-save du lieu avec la review liée
+
             return review
 
         except (KeyError, TypeError, ValueError) as e:
@@ -308,8 +322,12 @@ class HBnBFacade:
     def get_reviews_by_place(self, place_id):
         """
         Retourne la liste des avis associés à un lieu donné.
-        Retourne [] si aucun.
+        Soulève une erreur si le lieu est introuvable.
         """
+        place = self.place_repo.get(place_id)
+        if not place:
+            raise ValueError("Place not found")
+
         return [
             review for review in self.review_repo.get_all()
             if review.place and review.place.id == place_id
@@ -324,23 +342,28 @@ class HBnBFacade:
         if not review:
             raise ValueError(f"Review with ID {review_id} not found")
 
+        # Mise à jour conditionnelle
         if "text" in update_data:
             review.text = review.validate_text(update_data["text"], "Text")
 
         if "rating" in update_data:
-            review.rating = review.validate_rating(update_data["rating"], "Rating")
+            review.rating = review.validate_rating(update_data["rating"],
+                                                   "Rating")
 
+        # Sauvegarde dans le repo
         self.review_repo.add(review)
+
         return review
 
     def delete_review(self, review_id):
         """
         Supprime un avis par son identifiant.
         Met aussi à jour la liste des reviews dans l’objet Place lié.
+        Soulève une ValueError si la review est introuvable.
         """
         review = self.get_review(review_id)
         if not review:
-            return False
+            raise ValueError("Review not found")
 
         # Nettoyage de la relation dans le Place concerné
         place = review.place
@@ -349,4 +372,27 @@ class HBnBFacade:
             self.place_repo.add(place)
 
         self.review_repo.delete(review_id)
-        return True
+
+    def get_reviews_by_user(self, user_id):
+        """
+        Retourne la liste des avis rédigés par un utilisateur donné.
+        Soulève une erreur si l'utilisateur est introuvable.
+        """
+        user = self.user_repo.get(user_id)
+        if not user:
+            raise ValueError("User not found")
+
+        return [
+            review for review in self.review_repo.get_all()
+            if review.author and review.author.id == user_id
+        ]
+
+    def get_average_rating_for_place(self, place_id):
+        """
+        Calcule la moyenne des notes pour un lieu donné.
+        Retourne None si aucun avis.
+        """
+        reviews = self.get_reviews_by_place(place_id)
+        if not reviews:
+            return None
+        return sum(r.rating for r in reviews) / len(reviews)
