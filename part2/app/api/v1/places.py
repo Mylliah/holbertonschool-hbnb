@@ -12,6 +12,7 @@ HBnBFacade.
 from flask_restx import Namespace, Resource, fields
 from flask import request
 from app.services import facade  # Accès à la couche métier
+from app.api.v1.reviews import review_model
 
 # ===================================================
 # Définition du Namespace pour les opérations Place
@@ -34,16 +35,6 @@ user_model = api.model('PlaceUser', {
     'first_name': fields.String(description='First name of the owner'),
     'last_name': fields.String(description='Last name of the owner'),
     'email': fields.String(description='Email of the owner')
-})
-
-# ===================================================
-# Définition du modèle Review (utilisé dans Place)
-# ===================================================
-review_model = api.model('PlaceReview', {
-    'id': fields.String(description='Review ID'),
-    'user_id': fields.String(description='ID of the reviewer'),
-    'text': fields.String(description='Review text'),
-    'rating': fields.Integer(description='Rating')
 })
 
 # ===================================================
