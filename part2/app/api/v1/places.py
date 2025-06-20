@@ -37,6 +37,16 @@ user_model = api.model('PlaceUser', {
 })
 
 # ===================================================
+# Définition du modèle Review (utilisé dans Place)
+# ===================================================
+review_model = api.model('PlaceReview', {
+    'id': fields.String(description='Review ID'),
+    'user_id': fields.String(description='ID of the reviewer'),
+    'text': fields.String(description='Review text'),
+    'rating': fields.Integer(description='Rating')
+})
+
+# ===================================================
 # Définition du modèle Place (reçu en entrée POST/PUT)
 # ===================================================
 place_model = api.model('Place', {
@@ -46,7 +56,8 @@ place_model = api.model('Place', {
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
     'owner_id': fields.String(required=True, description='ID of the owner'),
-    'amenities': fields.List(fields.String, required=True, description="List of amenities ID's")
+    'amenities': fields.List(fields.String, required=True, description="List of amenities ID's"),
+    'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
 })
 
 
