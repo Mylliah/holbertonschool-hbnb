@@ -257,12 +257,12 @@ class HBnBFacade:
     def create_review(self, review_data):
         """
         Crée un nouvel avis à partir d'un dictionnaire de données.
-        Exige : text, rating, author_id, place_id.
         """
         try:
-            author = self.user_repo.get(review_data["author_id"])
-            if not author:
-                raise ValueError("Author not found")
+            # correspondance avec le champ attendu par Swagger
+            user = self.user_repo.get(review_data["user_id"])
+            if not user:
+                raise ValueError("User not found")
 
             place = self.place_repo.get(review_data["place_id"])
             if not place:
@@ -271,12 +271,14 @@ class HBnBFacade:
             review = Review(
                 text=review_data["text"],
                 rating=review_data["rating"],
-                author=author,
+                author=user,  # l’attribut dans Review reste "author"
                 place=place
             )
+
             self.review_repo.add(review)
-            place.add_review(review)  # synchronisation relationnelle
-            self.place_repo.add(place)  # re-save du lieu avec la review liée
+            place.add_review(review)          # synchronisation relationnelle
+            self.place_repo.add(place)        # re-save du lieu avec la review liée
+
             return review
 
         except (KeyError, TypeError, ValueError) as e:

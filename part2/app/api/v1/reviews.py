@@ -7,7 +7,7 @@ api = Namespace('reviews', description='Review operations')
 review_model = api.model('Review', {
     'text': fields.String(required=True, description='Text of the review'),
     'rating': fields.Integer(required=True, description='Rating of the place (1-5)', min=1, max=5),
-    'user_id': fields.String(required=True, description='ID of the user'),
+    'user_id': fields.String(required=True, description='ID of the author (User)'),
     'place_id': fields.String(required=True, description='ID of the place')
 })
 
@@ -90,3 +90,18 @@ class PlaceReviewList(Resource):
             return reviews, 200
         except ValueError as e:
             api.abort(404, str(e))
+
+@api.route('/users/<string:user_id>/reviews')
+class UserReviewList(Resource):
+    @api.response(200, 'List of reviews for the user retrieved successfully')
+    @api.response(404, 'User not found or no reviews found')
+    @api.marshal_list_with(review_output_model)
+    def get(self, user_id):
+        """Get all reviews written by a specific user"""
+        try:
+            reviews = facade.get_reviews_by_user(user_id)
+            if not reviews:
+                api.abort(404, "No reviews found for this user")
+            return reviews, 200
+        except Exception:
+            api.abort(500, "Internal server error")
