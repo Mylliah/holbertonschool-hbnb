@@ -1,19 +1,48 @@
 from flask import Flask
 from flask_restx import Api
+from config import DevelopmentConfig
+from .extensions import db, jwt, bcrypt
+
 from app.api.v1.users import api as users_ns
 from app.api.v1.places import api as places_ns
 from app.api.v1.amenities import api as amenities_ns
 from app.api.v1.reviews import api as reviews_ns
+from app.api.v1.auth import api as auth_ns
 
-def create_app():
+def create_app(config_class=DevelopmentConfig):
     app = Flask(__name__)
-    api = Api(app, version='1.0', title='HBnB API', description='HBnB Application API', doc='/api/v1/')
+    app.config.from_object(config_class)
+
+    # Extensions
+    db.init_app(app)
+    jwt.init_app(app)
+    bcrypt.init_app(app)
+
+    # API et namespaces
+    api = Api(
+        app, 
+        version='1.0', 
+        title='HBnB API', 
+        description='HBnB Application API', 
+        doc='/api/v1/',
+        authorizations={
+            'BearerAuth': {
+                'type': 'apiKey',
+                'in': 'header',
+                'name': 'Authorization',
+                'description': 'Bearer authentication token'
+            }
+        },
+        security='BearerAuth'
+    )
     api.add_namespace(users_ns, path='/api/v1/users')
     api.add_namespace(places_ns, path='/api/v1/places')
     api.add_namespace(amenities_ns, path='/api/v1/amenities')
     api.add_namespace(reviews_ns, path='/api/v1/reviews')
-    
-    # Placeholder pour les namespaces de l'API (les endpoints seront ajoutés plus tard)
-    # Les namespaces supplémentaires pour places, reviews et amenities seront ajoutés ultérieurement
+    api.add_namespace(auth_ns, path='/api/v1/auth')
+
+    # Initialiser les tables de base de données
+    with app.app_context():
+        db.create_all()
 
     return app

@@ -32,12 +32,13 @@ class Login(Resource):
 
         return {'access_token': access_token}, 200
 
-    @api.route('/protected')
-    class Protected(Resource):
-        @jwt_required()
-        @api.response(200, 'Access granted')
-        @api.response(401, 'Missing or invalid token')
-        def get(self):
-            """Un point de terminaison protégé nécessitant une authentification JWT"""
-            user = get_jwt_identity()
-            return {'message': f"Hello, user {user['id']}"}, 200
+
+@api.route('/protected')
+class Protected(Resource):
+    @jwt_required()
+    @api.response(200, 'Access granted')
+    @api.response(401, 'Missing or invalid token')
+    def get(self):
+        """Un point de terminaison protégé nécessitant une authentification JWT"""
+        user = get_jwt_identity()
+        return {'message': f"Hello, user {user['id']}"}, 200
