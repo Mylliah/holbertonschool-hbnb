@@ -9,39 +9,35 @@ Cette classe hérite de BaseModel.
 from app.models.base import BaseModel
 from app.extensions import db
 import uuid
+from app import db
+from app.models.base import BaseModel
 
+
+# Table d'association many-to-many entre Place et Amenity
+place_amenity = db.Table(
+    'place_amenity',
+    db.Column('place_id', db.String(36), db.ForeignKey('places.id'), primary_key=True),
+    db.Column('amenity_id', db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
+)
 
 class Amenity(BaseModel):
     """
-    Classe représentant une commodité associée à un hébergement.
+    Modèle représentant une commodité associée à un hébergement.
 
     Hérite de :
     - BaseModel : fournit id, created_at, updated_at
 
-    Attributs spécifiques :
+    Attributs :
     - name (str) : nom de la commodité (obligatoire, max 50 caractères)
     """
 
-    __slots__ = BaseModel.__slots__ + ('_name',)
+    __tablename__ = "amenities"
+
+    name = db.Column(db.String(50), nullable=False)
 
     def __init__(self, name):
-        """
-        Constructeur de la classe Amenity.
-
-        Paramètre :
-        - name (str) : nom de la commodité (ex: "Wi-Fi", "Parking")
-        """
         super().__init__()
-        self._name = self.validate_name(name, "Name")
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        self._name = self.validate_name(value, "Name")
-        self.touch()  # méthode héritée de BaseModel pour mettre à jour updated_at
+        self.name = self.validate_name(name, "Name")
 
     # ==========================
     # MÉTHODE DE VALIDATION
@@ -83,6 +79,13 @@ class Amenity(db.Model):
 
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(100), nullable=False)
+
+    # Ajout de la relation avec PlaceModel
+    places = db.relationship(
+        'PlaceModel',
+        secondary=place_amenity,
+        back_populates='amenities'
+    )
 
     def __repr__(self):
         return f"<Amenity {self.name}>"
