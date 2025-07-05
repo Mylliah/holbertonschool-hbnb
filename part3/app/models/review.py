@@ -1,13 +1,11 @@
 """models/review.py
 
 Modèle SQLAlchemy enrichi représentant un avis utilisateur dans HBnB.
-Hérite de BaseModel. Les relations ne sont pas encore mappées (pas de ForeignKey ni de relationship).
+Hérite de BaseModel. Cette version mappe les relations avec User et Place.
 """
 
 from app import db
 from app.models.base import BaseModel
-from app.models.user import User
-from app.models.place import Place
 
 
 class Review(BaseModel):
@@ -20,8 +18,10 @@ class Review(BaseModel):
     Attributs :
     - text (str) : contenu de l'avis (obligatoire, max 500 caractères)
     - rating (int) : note sur 5 (obligatoire, entre 1 et 5)
-    - author (User) : l'utilisateur ayant rédigé l'avis (non mappé pour l’instant)
-    - place (Place) : le lieu concerné par l’avis (non mappé pour l’instant)
+    - user_id (str) : ID de l’auteur (clé étrangère)
+    - place_id (str) : ID du lieu (clé étrangère)
+    - author : relation vers User (déduite via backref="author")
+    - place : relation vers Place (déduite via backref="place")
     """
 
     __tablename__ = "reviews"
@@ -29,12 +29,17 @@ class Review(BaseModel):
     text = db.Column(db.String(500), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
 
+    user_id = db.Column(db.String(60), db.ForeignKey("users.id"), nullable=False)
+    place_id = db.Column(db.String(60), db.ForeignKey("places.id"), nullable=False)
+
+    # Les relations sont gérées via backref (dans User et Place), donc rien à définir ici
+
     def __init__(self, text, rating, author, place):
         super().__init__()
         self.text = self.validate_text(text, "Text")
         self.rating = self.validate_rating(rating, "Rating")
-        self.author = self.validate_author(author, "Author")
-        self.place = self.validate_place(place, "Place")
+        self.user_id = self.validate_author(author, "Author").id
+        self.place_id = self.validate_place(place, "Place").id
 
     # ========== VALIDATIONS ==========
 
@@ -56,26 +61,16 @@ class Review(BaseModel):
         return value
 
     def validate_author(self, value, field_name):
+        from app.models.user import User
         if not isinstance(value, User):
             raise TypeError(f"{field_name} must be an instance of User")
         return value
 
     def validate_place(self, value, field_name):
+        from app.models.place import Place
         if not isinstance(value, Place):
             raise TypeError(f"{field_name} must be an instance of Place")
         return value
-
-    # ========== PROPRIÉTÉS EXTERNES POUR L'API ==========
-
-    @property
-    def user_id(self):
-        """Permet d'exposer l'ID de l’auteur via user_id dans l’API."""
-        return self.author.id if self.author else None
-
-    @property
-    def place_id(self):
-        """Permet d'exposer l'ID du lieu via place_id dans l’API."""
-        return self.place.id if self.place else None
 
     # ========== MÉTHODES MÉTIER ==========
 
@@ -86,9 +81,9 @@ class Review(BaseModel):
             elif key == "rating":
                 self.rating = self.validate_rating(value, "Rating")
             elif key == "author":
-                self.author = self.validate_author(value, "Author")
+                self.user_id = self.validate_author(value, "Author").id
             elif key == "place":
-                self.place = self.validate_place(value, "Place")
+                self.place_id = self.validate_place(value, "Place").id
 
     # ========== REPRÉSENTATIONS ==========
 

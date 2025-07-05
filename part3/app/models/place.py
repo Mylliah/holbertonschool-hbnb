@@ -2,11 +2,12 @@
 
 Modèle SQLAlchemy enrichi représentant un lieu (hébergement) dans HBnB.
 Hérite de BaseModel qui fournit id, created_at, updated_at.
-Aucune relation n'est définie à ce stade, conformément à la tâche 7.
 """
 
 from app import db
 from app.models.base import BaseModel
+# Import requis pour les ForeignKey vers User et la table d'association Place-Amenity
+from app.models.place_amenity import place_amenity
 
 
 class Place(BaseModel):
@@ -23,11 +24,28 @@ class Place(BaseModel):
 
     __tablename__ = "places"
 
+    # Colonnes de base
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String, nullable=False)
     price = db.Column(db.Float, nullable=False)
     latitude = db.Column(db.Float, nullable=True)
     longitude = db.Column(db.Float, nullable=True)
+
+    # 🔗 Clé étrangère vers User (relation User → Place)
+    user_id = db.Column(db.String(60), db.ForeignKey('users.id'), nullable=False)
+
+    # 🔗 Relation Place → Review (un-à-plusieurs)
+    reviews = db.relationship(
+        "Review", backref="place", lazy=True, cascade="all, delete-orphan"
+    )
+
+    # 🔗 Relation Place ↔ Amenity (plusieurs-à-plusieurs)
+    amenities = db.relationship(
+        "Amenity",
+        secondary=place_amenity,
+        backref=db.backref("places", lazy=True),
+        lazy="subquery"
+    )
 
     def __init__(self, title, description, price, latitude=None, longitude=None):
         super().__init__()
