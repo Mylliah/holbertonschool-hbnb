@@ -7,7 +7,7 @@ Hérite de BaseModel qui fournit id, created_at, updated_at.
 from app import db
 from app.models.base import BaseModel
 # Import requis pour les ForeignKey vers User et la table d'association Place-Amenity
-from app.models.place_amenity import place_amenity
+from app.models.amenity import place_amenity
 
 
 class Place(BaseModel):
@@ -31,29 +31,21 @@ class Place(BaseModel):
     latitude = db.Column(db.Float, nullable=True)
     longitude = db.Column(db.Float, nullable=True)
 
-    # 🔗 Clé étrangère vers User (relation User → Place)
+    # Clé étrangère vers User (relation User → Place)
     user_id = db.Column(db.String(60), db.ForeignKey('users.id'), nullable=False)
 
-    # 🔗 Relation Place → Review (un-à-plusieurs)
+    # Relation Place → Review (un-à-plusieurs)
     reviews = db.relationship(
         "Review", backref="place", lazy=True, cascade="all, delete-orphan"
     )
 
-    # 🔗 Relation Place ↔ Amenity (plusieurs-à-plusieurs)
+    # Relation Place ↔ Amenity (plusieurs-à-plusieurs)
     amenities = db.relationship(
         "Amenity",
         secondary=place_amenity,
-        backref=db.backref("places", lazy=True),
+        back_populates="places",
         lazy="subquery"
     )
-
-    def __init__(self, title, description, price, latitude=None, longitude=None):
-        super().__init__()
-        self.title = self.validate_title(title, "Title")
-        self.description = self.validate_description(description, "Description")
-        self.price = self.validate_price(price, "Price")
-        self.latitude = self.validate_latitude(latitude, "Latitude")
-        self.longitude = self.validate_longitude(longitude, "Longitude")
 
     # ========== MÉTHODES DE VALIDATION ==========
 

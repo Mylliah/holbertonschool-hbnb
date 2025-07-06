@@ -14,6 +14,7 @@ place_amenity = db.Table(
     db.Column('amenity_id', db.String(60), db.ForeignKey('amenities.id'), primary_key=True)
 )
 
+
 class Amenity(BaseModel):
     """
     Modèle représentant une commodité associée à un hébergement.
@@ -30,17 +31,13 @@ class Amenity(BaseModel):
 
     name = db.Column(db.String(50), nullable=False)
 
-    # 🔗 Relation vers Place (many-to-many, via table d'association)
+    # Relation vers Place (many-to-many, via table d'association)
     places = db.relationship(
-        "Place",  # nom du modèle cible (doit être exactement le même nom que la classe Place)
+        "Place",
         secondary=place_amenity,
-        backref=db.backref("amenities", lazy=True),
+        back_populates="amenities",
         lazy="subquery"
     )
-
-    def __init__(self, name):
-        super().__init__()
-        self.name = self.validate_name(name, "Name")
 
     def validate_name(self, value, field_name):
         if not isinstance(value, str):

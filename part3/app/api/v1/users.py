@@ -1,7 +1,11 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask import request
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import (
+    jwt_required,
+    get_jwt_identity,
+    get_jwt
+)
 
 api = Namespace('users', description='User operations')
 
@@ -33,8 +37,8 @@ class UserList(Resource):
     @api.marshal_with(user_output_model)
     def post(self):
         """Create a new user (admin only)"""
-        identity = get_jwt_identity()
-        if not identity.get('is_admin'):
+        claims = get_jwt()
+        if not claims.get('is_admin'):
             return {'error': 'Admin privileges required'}, 403
 
         user_data = api.payload
@@ -48,7 +52,6 @@ class UserList(Resource):
             new_user = facade.create_user(user_data)
             return new_user, 201
         except (ValueError, TypeError) as e:
-            # Si les données sont invalides (ex : email malformé)
             api.abort(400, str(e))
 
     @api.marshal_list_with(user_output_model)
@@ -99,9 +102,10 @@ class UserResource(Resource):
     @api.response(404, 'User not found')
     def put(self, user_id):
         """Update a user (admin or self)"""
-        identity = get_jwt_identity()
-        current_user_id = identity.get("id")
-        is_admin = identity.get("is_admin", False)
+        identity = get_jwt_identity()  # str(user.id)
+        claims = get_jwt()
+        current_user_id = identity
+        is_admin = claims.get("is_admin", False)
 
         user = facade.get_user(user_id)
         if not user:
@@ -112,11 +116,18 @@ class UserResource(Resource):
 
         user_data = api.payload
 
+        # Gestion de la modification de l'email
         if 'email' in user_data:
-            return {'error': 'You cannot modify email or password'}, 400
+            if not is_admin:
+                return {'error': 'You cannot modify email'}, 400
 
-        if 'password' in user_data:
-            return {'error': 'You cannot modify email or password'}, 400
+            existing = facade.get_user_by_email(user_data['email'])
+            if existing and existing.id != user_id:
+                return {'error': 'Email already in use'}, 400
+
+        # Gestion de la modification du mot de passe
+        if 'password' in user_data and not is_admin:
+            return {'error': 'You cannot modify password'}, 400
 
         try:
             updated_user = facade.update_user(user_id, user_data)
