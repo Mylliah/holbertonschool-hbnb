@@ -77,13 +77,15 @@ Il s’appuie sur Flask, Flask-RESTx et un système de persistance modulaire (in
 │ └── 📄 test_crud.sql → Script de test des requêtes SQL
 
 ├── 📁 app/
-│ ├── 📁 api/v1/
-│ │ ├── 📄 amenities.py → Endpoints REST pour les commodités
-│ │ ├── 📄 auth.py → Endpoint de login JWT
-│ │ ├── 📄 places.py → Endpoints REST pour les logements
-│ │ ├── 📄 reviews.py → Endpoints REST pour les avis
-│ │ ├── 📄 users.py → Endpoints REST pour les utilisateurs
-│ │ └── 📄 init.py → Regroupe les routes sous le namespace v1
+│ ├── 📁 api/
+| | └── 📄 init__.py → Initialisation du package api
+| |     📁 v1/
+│ │      ├── 📄 amenities.py → Endpoints REST pour les commodités
+│ │      ├── 📄 auth.py → Endpoint de login JWT
+│ │      ├── 📄 places.py → Endpoints REST pour les logements
+│ │      ├── 📄 reviews.py → Endpoints REST pour les avis
+│ │      ├── 📄 users.py → Endpoints REST pour les utilisateurs
+│ │      └── 📄 init.py → Initialisation de la version 1 des routes
 │ │
 │ ├── 📁 models/
 │ │ ├── 📄 amenity.py → Modèle Amenity
@@ -91,21 +93,27 @@ Il s’appuie sur Flask, Flask-RESTx et un système de persistance modulaire (in
 │ │ ├── 📄 place.py → Modèle Place
 │ │ ├── 📄 review.py → Modèle Review
 │ │ ├── 📄 user.py → Modèle User (avec hash de mot de passe)
-│ │ └── 📄 init.py
+│ │ └── 📄 init.py → Permet l'import global des modèles
 │ │
 │ ├── 📁 persistence/
 │ │ ├── 📄 repository.py → Accès aux données (CRUD)
-│ │ └── 📄 init.py
+│ │ └── 📄 init.py → Initialisation du package de persistance
 │ │
 │ ├── 📁 services/
-│ │ ├── 📄 extensions.py → Initialisation des extensions Flask (JWT, Bcrypt, DB)
-│ │ └── 📄 init.py
+│ │ ├── 📄 facade.py → Contient la couche de service, abstraction entre endspoints (API) et persistance des données
+│ │ └── 📄 init.py → Permet d’organiser les services métier
 │ │
-│ └── 📄 init.py → Création de l'application Flask
+│ └── 📄 extensions.py → Initialisation des extensions Flask (JWT, Bcrypt, DB)
+| └── 📄 init.py → Création de l'application Flask
 
 ├── 📁 tests/
 │ └── 📄 test_user_model_pawd.py → Test du modèle utilisateur
 
+├── 📁 instance/
+│ └── 📄 dev.db → Contient les tables SQLAlchemy générées automatiquement
+
+├── 📁 images/ → Contient les ressources visuelles du projet (schémas, diagrammes, etc.)
+│
 
 ├── 📄 config.py → Configuration Flask (dev/prod)
 ├── 📄 requirements.txt → Dépendances Python
