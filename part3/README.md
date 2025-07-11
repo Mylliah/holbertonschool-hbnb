@@ -2,7 +2,6 @@
 # 🏠 HBNB - RESTful API avec Authentification JWT
 
 ---
-ATTENTION MODIFIER LES LIENS VERS LES IMAGES !!!!!!!!!!!!!!!!
 
 ## 📌 Objectif du projet
 
