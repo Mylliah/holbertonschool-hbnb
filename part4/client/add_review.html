@@ -1,41 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Review</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="index.html">
-                <img src="logo.png" class="logo" alt="HBNB Logo">
-            </a>
-            <a href="login.html" class="login-button">Login</a>
-        </nav>
-    </header>
-    <main>
-        <form id="review-form" class="add-review form">
-            <h2>Add a Review</h2>
-            <input type="hidden" id="place_id" name="place_id" value="">
-            <label for="review">Your Review:</label>
-            <textarea id="review" name="review" required></textarea>
-            <label for="rating">Rating:</label>
-            <select id="rating" name="rating" required>
-                <option value="">--Select--</option>
-                <option value="1">⭐</option>
-                <option value="2">⭐⭐</option>
-                <option value="3">⭐⭐⭐</option>
-                <option value="4">⭐⭐⭐⭐</option>
-                <option value="5">⭐⭐⭐⭐⭐</option>
-            </select>
-            <button type="submit">Submit Review</button>
-        </form>
-    </main>
-    <footer>
-        <p>All rights reserved.</p>
-    </footer>
-    <script src="scripts.js"></script>
-</body>
-</html>
+<form id="review-form" class="add-review form" onsubmit="return false;">
+    <h2>Add a Review</h2>
+    <input type="hidden" id="place_id" value="">
+    <label for="text">Your Review:</label>
+    <textarea id="text" placeholder="Share your experience..." required></textarea>
+    <label for="rating">Rating:</label>
+    <select id="rating" required>
+        <option value="">--Select a rating--</option>
+        <option value="1">⭐ (1 star)</option>
+        <option value="2">⭐⭐ (2 stars)</option>
+        <option value="3">⭐⭐⭐ (3 stars)</option>
+        <option value="4">⭐⭐⭐⭐ (4 stars)</option>
+        <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
+    </select>
+    <button type="button" onclick="submitReview(event)">Submit Review</button>
+</form>
+<script src="add_review.js"></script>

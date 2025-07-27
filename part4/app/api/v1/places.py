@@ -139,6 +139,7 @@ class PlaceList(Resource):
                     "title": place.title,
                     "description": place.description,
                     "price": place.price,
+                    "picture": place.picture,
                     "latitude": place.latitude,
                     "longitude": place.longitude,
                     "owner": {
@@ -175,7 +176,10 @@ class PlaceList(Resource):
                 "places": result
             }, 200
 
-        except Exception:
+        except Exception as e:
+            print("❌ ERREUR dans GET /places/")
+            print("Type :", type(e).__name__)
+            print("Message :", str(e))
             return {"error": "Internal server error"}, 500
 
 
@@ -206,6 +210,7 @@ class PlaceSearch(Resource):
             "title": place.title,
             "description": place.description,
             "price": place.price,
+            "picture": place.picture,
             "latitude": place.latitude,
             "longitude": place.longitude,
             "owner": {
@@ -260,6 +265,7 @@ class PlacesByUser(Resource):
                     "title": place.title,
                     "description": place.description,
                     "price": place.price,
+                    "picture": place.picture,
                     "latitude": place.latitude,
                     "longitude": place.longitude,
                     "owner": {
@@ -324,6 +330,7 @@ class PlaceResource(Resource):
                 "title": place.title,
                 "description": place.description,
                 "price": place.price,
+                "picture": place.picture,
                 "latitude": place.latitude,
                 "longitude": place.longitude,
                 "owner": {
@@ -428,6 +435,7 @@ class PlaceResource(Resource):
                 'title': updated_place.title,
                 'description': updated_place.description,
                 'price': updated_place.price,
+                "picture": place.picture,
                 'latitude': updated_place.latitude,
                 'longitude': updated_place.longitude,
                 'owner_id': updated_place.owner.id,

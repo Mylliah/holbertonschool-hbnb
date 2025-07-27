@@ -158,7 +158,7 @@ class HBnBFacade:
                 price=place_data["price"],
                 latitude=place_data["latitude"],
                 longitude=place_data["longitude"],
-                user_id=owner.id
+                owner_id=owner.id
             )
             db.session.add(place)  # ajout à la session
 

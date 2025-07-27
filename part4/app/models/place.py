@@ -28,11 +28,12 @@ class Place(BaseModel):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String, nullable=False)
     price = db.Column(db.Float, nullable=False)
+    picture = db.Column(db.String(1024), nullable=True)
     latitude = db.Column(db.Float, nullable=True)
     longitude = db.Column(db.Float, nullable=True)
 
     # Clé étrangère vers User (relation User → Place)
-    user_id = db.Column(db.String(60), db.ForeignKey('users.id'), nullable=False)
+    owner_id = db.Column(db.String(60), db.ForeignKey('users.id'), nullable=False)
 
     # Relation Place → Review (un-à-plusieurs)
     reviews = db.relationship(
@@ -73,6 +74,14 @@ class Place(BaseModel):
         if value <= 0:
             raise ValueError(f"{field_name} must be greater than 0")
         return float(value)
+
+    def validate_picture(self, value, field_name):
+        if not isinstance(value, str):
+            raise TypeError(f"{field_name} must be a string")
+        value = value.strip()
+        if not value:
+            raise ValueError(f"{field_name} is required")
+        return value
 
     def validate_latitude(self, value, field_name):
         if value is None:

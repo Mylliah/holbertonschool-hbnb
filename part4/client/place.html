@@ -1,59 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Place Details</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  </head>
+  <body>
     <header>
-        <nav>
-            <a href="index.html">
-                <img src="logo.png" class="logo" alt="HBNB Logo">
-            </a>
-            <a href="login.html" class="login-button">Login</a>
-        </nav>
+      <nav>
+        <a href="index.html">
+          <img src="logo.png" class="logo" alt="HBNB Logo" />
+        </a>
+        <a href="login.html" class="login-button">Login</a>
+        <div class="login-button connected"></div>
+      </nav>
     </header>
     <main>
-        <section id="place-details" class="place-details">
-            <div class="place-info"> <!-- AJOUT -->
-                <h2>Sunny Apartment</h2>
-                <p>Hosted by: Marie Curie</p>
-                <p>$130 per night</p>
-                <p>Description: Bright, clean and fully equipped apartment in Paris.</p>
-                <ul class="amenities">
-                <li>WiFi</li>
-                <li>Air Conditioning</li>
-                <li>Kitchen</li>
-                </ul>
-            </div>
-        </section>
-        
-        <section id="reviews">
-            <div class="review-card"> <!-- AJOUT -->
-                <p>"Très bon séjour !"</p>
-                <p>- Alice ⭐⭐⭐⭐⭐</p>
-            </div>
-            <div class="review-card"> <!-- AJOUT -->
-                <p>"Bien placé et calme."</p>
-                <p>- Bob ⭐⭐⭐⭐</p>
-            </div>
-        </section>
+      <div class="place-container">
+        <section id="place-details" class="place-details"></section>
 
-        <section id="add-review">
-            <h2>Add a Review</h2>
-            <form id="review-form" class="add-review form">
-                <label for="review-text">Review:</label>
-                <textarea id="review-text" name="review-text" required></textarea>
-                
-                <button type="submit">Submit</button>
-            </form>
-        </section>
+        <section id="place-picture"></section>
+
+        <section id="reviews"></section>
+      </div>
+
+      <section id="add-review"></section>
     </main>
     <footer>
-        <p>All rights reserved.</p>
+      <p>All rights reserved.</p>
     </footer>
-    <script src="scripts.js"></script>
-</body>
+    <script src="place.js"></script>
+  </body>
 </html>

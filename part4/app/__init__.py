@@ -28,7 +28,12 @@ def create_app(config_class=DevelopmentConfig):
     app.config.from_object(config_class)
 
     # Activation du CORS
-    CORS(app, resources={r"/api/*": {"origins": "http://localhost:8080"}}, supports_credentials=True)
+    CORS(app,
+         resources={r"/api/*": {"origins": "http://127.0.0.1:8080"}}, 
+         supports_credentials=True,
+         allow_headers=["Content-Type", "Authorization"],
+         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+         )
 
     # Désactive les warnings inutiles de SQLAlchemy (si pas déjà dans config.py)
     app.config.setdefault('SQLALCHEMY_TRACK_MODIFICATIONS', False)
