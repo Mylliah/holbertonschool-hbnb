@@ -12,7 +12,7 @@ DELETE FROM users;
 -- Insertion de l’administrateur
 INSERT INTO users (id, first_name, last_name, email, password, is_admin)
 VALUES (
-'36c9050e-ddd3-4c3b-9731-9f487208bbc1',
+'9eac0ba7-d7f7-4072-91de-5153c3e15ed7',
 'Admin',
 'HBnB',
 'admin@hbnb.io',

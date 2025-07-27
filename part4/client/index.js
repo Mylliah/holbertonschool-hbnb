@@ -104,7 +104,7 @@ function displayPlaces(places) {
 // fonction pour initialiser et gérer le filtre de prix
 function setupPriceFilter() {
   const filter = document.getElementById("price-filter");
-  const options = ["10", "50", "100", "All"];
+  const options = ["All", "10", "50", "100"];
 
   if (filter.options.length === 0) {
     options.forEach((value) => {
@@ -113,6 +113,8 @@ function setupPriceFilter() {
       opt.textContent = value;
       filter.appendChild(opt);
     });
+    // Définir "All" comme valeur par défaut
+    filter.value = "All";
   }
 
   filter.addEventListener("change", (event) => {
@@ -122,9 +124,9 @@ function setupPriceFilter() {
     cards.forEach((card) => {
       const price = parseInt(card.getAttribute("data-price"));
       if (maxPrice === "All" || price <= parseInt(maxPrice)) {
-        card.style.display = "block";
+        card.classList.remove("hidden");
       } else {
-        card.style.display = "none";
+        card.classList.add("hidden");
       }
     });
   });

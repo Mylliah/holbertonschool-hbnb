@@ -493,3 +493,8 @@ button:hover {
   padding: 12px;
   font-size: 16px;
 }
+
+/* Classe pour masquer les éléments filtrés sans affecter le layout */
+.hidden {
+  display: none !important;
+}
