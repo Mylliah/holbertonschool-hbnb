@@ -33,33 +33,31 @@ function logoutUser() {
 
 document.addEventListener("DOMContentLoaded", () => {
   const currentPage = window.location.pathname;
+  const token = getCookie("token");
+  const loginLink = document.querySelector(".login-button");
+  const connected = document.querySelector(".connected");
 
-  if (currentPage.includes("index.html")) {
-    const token = getCookie("token");
-    const loginLink = document.querySelector(".login-button");
-    const connected = document.querySelector(".connected");
-
-    // Vérifier si le token existe et n'est pas expiré
-    if (!token || isTokenExpired(token)) {
-      // Token inexistant ou expiré - déconnecter l'utilisateur
-      if (token) {
-        logoutUser();
-        return; // Arrêter l'exécution car la page va se recharger
-      }
-      loginLink.style.display = "block"; // Non connecté
-      connected.style.display = "none";
-    } else {
-      loginLink.style.display = "none"; // Connecté
-      connected.style.display = "block";
-
-      const welcome = document.createElement("p");
-      welcome.innerHTML = `Connected`;
-      connected.appendChild(welcome);
+  // Vérifier si le token existe et n'est pas expiré
+  if (!token || isTokenExpired(token)) {
+    // Token inexistant ou expiré - déconnecter l'utilisateur
+    if (token) {
+      logoutUser();
+      return; // Arrêter l'exécution car la page va se recharger
     }
-    fetchPlaces(); // récupérer les lieux 
-    setupPriceFilter(); // initialiser le filtre de prix
+    loginLink.style.display = "block"; // Non connecté
+    connected.style.display = "none";
+  } else {
+    loginLink.style.display = "none"; // Connecté
+    connected.style.display = "block";
+
+    const welcome = document.createElement("p");
+    welcome.innerHTML = `Connected`;
+    connected.appendChild(welcome);
   }
-});
+  fetchPlaces(); // récupérer les lieux 
+  setupPriceFilter(); // initialiser le filtre de prix
+  }
+);
 
 // fetch des lieux depuis l'API
 async function fetchPlaces() {
