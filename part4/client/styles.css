@@ -33,6 +33,13 @@ nav a {
 main {
   padding: 2rem;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#filter {
+  margin-bottom: 20px;
 }
 
 /* Tâche 0 */
@@ -359,11 +366,16 @@ main {
 }
 
 #login-form {
-  width: 500px;
-  height: 500px;
-  margin: 0 auto;
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  margin: 80px auto;
   display: flex;
   flex-direction: column;
+  gap: 20px;
 }
 
 #login-form h2 {
@@ -371,8 +383,22 @@ main {
 }
 
 #login-form button {
-  margin-top: 20px;
-  width: 267px;
+  padding: 12px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+}
+
+#login-form button:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
 }
 
 .form-control {
@@ -514,4 +540,27 @@ button:hover {
 /* Classe pour masquer les éléments filtrés sans affecter le layout */
 .hidden {
   display: none !important;
+}
+
+input[type="email"],
+input[type="password"] {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 1em;
+  transition: border-color 0.3s ease;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.login-logo {
+  height: 50px;
+  margin: 0 auto 10px auto;
+  display: block;
 }
