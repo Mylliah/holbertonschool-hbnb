@@ -11,6 +11,14 @@ function getCookie(name) {
   return null;
 }
 
+// fonction pour déconnecter l'utilisateur
+function logoutUser() {
+  // Supprimer le cookie token
+  document.cookie = "token=; path=/; max-age=0";
+  // Recharger la page pour mettre à jour l'interface
+  window.location.reload();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const currentPage = window.location.pathname;
 
@@ -20,15 +28,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const addReviewSection = document.getElementById("add-review");
     const loginLink = document.querySelector(".login-button");
     const connected = document.querySelector(".connected");
+    const logoutButton = document.querySelector(".logout-button");
     const review = document.getElementById("add-review");
 
     if (!token) {
       loginLink.style.display = "block"; // Non connecté
       connected.style.display = "none";
+      if (logoutButton) logoutButton.style.display = "none";
       review.style.display = "none";
     } else {
       loginLink.style.display = "none"; // Connecté
       connected.style.display = "block";
+      if (logoutButton) logoutButton.style.display = "block";
       review.style.display = "block";
 
       const welcome = document.createElement("p");

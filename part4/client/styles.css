@@ -394,6 +394,23 @@ main {
   border-radius: 5px;
 }
 
+/* Bouton logout */
+.logout-button {
+  float: right;
+  padding: 10px;
+  margin-right: 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: none; /* caché par défaut */
+}
+
+.logout-button:hover {
+  background-color: #c82333;
+}
+
 /* Footer */
 footer {
   background-color: #333;

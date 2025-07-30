@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const token = getCookie("token");
   const loginLink = document.querySelector(".login-button");
   const connected = document.querySelector(".connected");
+  const logoutButton = document.querySelector(".logout-button");
 
   // Vérifier si le token existe et n'est pas expiré
   if (!token || isTokenExpired(token)) {
@@ -46,9 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     loginLink.style.display = "block"; // Non connecté
     connected.style.display = "none";
+    if (logoutButton) logoutButton.style.display = "none";
   } else {
     loginLink.style.display = "none"; // Connecté
     connected.style.display = "block";
+    if (logoutButton) logoutButton.style.display = "block";
 
     const welcome = document.createElement("p");
     welcome.innerHTML = `Connected`;

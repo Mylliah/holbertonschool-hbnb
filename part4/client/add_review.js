@@ -11,7 +11,7 @@ function getCookie(name) {
   return null;
 }
 
-// fonction pour décoder le JWT et récupérer l'user_id
+// fonction pour décoder le JWT et récupérer l'user id
 function getUserIdFromToken(token) {
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
