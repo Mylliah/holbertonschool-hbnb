@@ -238,6 +238,13 @@ Depuis n’importe quelle page, bouton "Logout" visible si connecté
   </a>
 </p>
 
+**Champ laissé vide pendant l'ajout d'un avis :**
+<p align="center">
+  <a href="screenshots_front/field_empty.jpg">
+    <img src="screenshots_front/field_empty.jpg" alt="Tri par prix" width="500">
+  </a>
+</p>
+
 
 ---
 
