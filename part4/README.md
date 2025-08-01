@@ -186,38 +186,38 @@ Depuis n’importe quelle page, bouton "Logout" visible si connecté
 ## Captures d’écran
 
 <p align="center">
-  <a href="screenshots/index_page_places_list.jpg">
-    <img src="screenshots/index_page_places_list.jpg" alt="Page d'accueil - Liste des lieux" width="300">
+  <a href="screenshots_front/index_page_places_list.jpg">
+    <img src="screenshots_front/index_page_places_list.jpg" alt="Page d'accueil - Liste des lieux" width="300">
   </a>
 </p>
 
 <p align="center">
-  <a href="screenshots/login_page.jpg">
-    <img src="screenshots/login_page.jpg" alt="Page de connexion" width="300">
+  <a href="screenshots_front/login_page.jpg">
+    <img src="screenshots_front/login_page.jpg" alt="Page de connexion" width="300">
   </a>
 </p>
 
 <p align="center">
-  <a href="screenshots/view_place_details.jpg">
-    <img src="screenshots/view_place_details.jpg" alt="Détails d'un lieu" width="300">
+  <a href="screenshots_front/view_place_details.jpg">
+    <img src="screenshots_front/view_place_details.jpg" alt="Détails d'un lieu" width="300">
   </a>
 </p>
 
 <p align="center">
-  <a href="screenshots/add_review_if_connected.jpg">
-    <img src="screenshots/add_review_if_connected.jpg" alt="Ajout d'un commentaire possible si connecté" width="300">
+  <a href="screenshots_front/add_review_if_connected.jpg">
+    <img src="screenshots_front/add_review_if_connected.jpg" alt="Ajout d'un commentaire possible si connecté" width="300">
   </a>
 </p>
 
 <p align="center">
-  <a href="screenshots/only_view_review_not_connected.jpg">
-    <img src="screenshots/only_view_review_not_connected.jpg" alt="Vue commentaires seulement si non connecté" width="300">
+  <a href="screenshots_front/only_view_review_not_connected.jpg">
+    <img src="screenshots_front/only_view_review_not_connected.jpg" alt="Vue commentaires seulement si non connecté" width="300">
   </a>
 </p>
 
 <p align="center">
-  <a href="screenshots/sorting_by_price.jpg">
-    <img src="screenshots/sorting_by_price.jpg" alt="Tri par prix" width="300">
+  <a href="screenshots_front/sorting_by_price.jpg">
+    <img src="screenshots_front/sorting_by_price.jpg" alt="Tri par prix" width="300">
   </a>
 </p>
 
