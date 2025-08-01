@@ -134,7 +134,7 @@ npx http-server -p 5500
 ```
 
 Le client sera accessible à l’adresse : `http://127.0.0.1:5500/client/index.html`
-Assurez-vous que le serveur back-end (partie 3) est déjà lancé avant d’ouvrir le client front-end.
+Assurez-vous que le serveur back-end est déjà lancé avant d’ouvrir le client front-end.
 
 
 ---
@@ -145,7 +145,7 @@ Assurez-vous que le serveur back-end (partie 3) est déjà lancé avant d’ouvr
 Pour faciliter les tests, voici un compte administrateur par défaut :
 
 - **Email** : `admin@hbnb.io`  
-- **Mot de passe** : `adminpass!`
+- **Mot de passe** : `adminpass`
 
 
 ---
@@ -217,7 +217,7 @@ Depuis n’importe quelle page, bouton "Logout" visible si connecté
   </a>
 </p>
 
-**Vue des détails du lieu seulement si non connecté :**
+**si non connecté, vue des détails du lieu seulement :**
 <p align="center">
   <a href="screenshots_front/only_view_review_not_connected.jpg">
     <img src="screenshots_front/only_view_review_not_connected.jpg" alt="Vue commentaires seulement si non connecté" width="500">
