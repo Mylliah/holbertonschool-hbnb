@@ -29,6 +29,14 @@ function getPlaceIdFromURL() {
   return params.get("id");
 }
 
+// affiche messages dans le DOM
+function displayMessage(text, type = "error") {
+  const messageDiv = document.getElementById("message");
+  messageDiv.textContent = text;
+  messageDiv.className = `message ${type}`;
+  messageDiv.style.display = "block";
+}
+
 // initialisation du formulaire
 document.addEventListener("DOMContentLoaded", () => {
   const placeId = getPlaceIdFromURL();
@@ -49,14 +57,14 @@ async function submitReview(event) {
   const token = getCookie("token");
   
   if (!token) {
-    alert("You must be logged in to submit a review.");
+    displayMessage("You must be logged in to submit a review.");
     return false;
   }
 
   // récupération de l'user_id depuis le JWT
   const userId = getUserIdFromToken(token);
   if (!userId) {
-    alert("Invalid authentication token.");
+    displayMessage("Invalid authentication token.");
     return false;
   }
 
@@ -66,7 +74,7 @@ async function submitReview(event) {
   const rating = parseInt(document.getElementById("rating").value);
 
   if (!placeId || !text || !rating) {
-    alert("Please fill in all fields.");
+    displayMessage("Please fill in all fields.");
     return false;
   }
 
@@ -113,10 +121,10 @@ async function submitReview(event) {
         errorMessage = "Invalid review data";
       }
       
-      alert(errorMessage);
+      displayMessage(errorMessage);
     }
   } catch (error) {
     console.error("Error submitting review:", error);
-    alert("Network error: Unable to submit review");
+    displayMessage("Network error: Unable to submit review");
   }
 }

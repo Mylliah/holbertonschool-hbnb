@@ -140,6 +140,17 @@ Assurez-vous que le serveur back-end (partie 3) est déjà lancé avant d’ouvr
 ---
 
 
+## 🔐 Identifiants administrateur
+
+Pour faciliter les tests, voici un compte administrateur par défaut :
+
+- **Email** : `admin@hbnb.io`  
+- **Mot de passe** : `adminpass!`
+
+
+---
+
+
 ## Exemple d’utilisation des fonctionnalités disponibles
 
 ### Connexion via le formulaire (`login.html`)
@@ -147,23 +158,17 @@ Assurez-vous que le serveur back-end (partie 3) est déjà lancé avant d’ouvr
 Remplir les champs email et mot de passe, puis cliquer sur “Login”.  
 Un cookie `token` est alors enregistré automatiquement et utilisé pour les appels suivants.
 
-
----
-
-
 ### Navigation vers la liste des lieux (`index.html`)
 
 - Accessible à tous (même non authentifié)
 - Filtrage dynamique des lieux par prix (`10`, `50`, `100`, `Tous`)
 - Chaque lieu contient un bouton "View Details"
 
-
 ### Page de détails (`place.html?id=<place_id>`)
 
 - Affiche les détails du lieu : titre, hôte, prix, description, commodités
 - Affiche les avis existants
 - Si connecté → bouton “Ajouter un avis” visible
-
 
 ### Formulaire d’ajout d’un avis (`add_review.html?id=<place_id>`)
 
@@ -172,7 +177,6 @@ Un cookie `token` est alors enregistré automatiquement et utilisé pour les app
   - champ texte
   - note (1 à 5 étoiles)
 - Redirection automatique vers la page du lieu après soumission
-
 
 ### Déconnexion
 
@@ -185,39 +189,52 @@ Depuis n’importe quelle page, bouton "Logout" visible si connecté
 
 ## Captures d’écran
 
+**Page d'accueil - liste des lieux :**
 <p align="center">
   <a href="screenshots_front/index_page_places_list.jpg">
     <img src="screenshots_front/index_page_places_list.jpg" alt="Page d'accueil - Liste des lieux" width="500">
   </a>
 </p>
 
+**Page de connexion :**
 <p align="center">
   <a href="screenshots_front/login_page.jpg">
     <img src="screenshots_front/login_page.jpg" alt="Page de connexion" width="500">
   </a>
 </p>
 
+**Détails d'un lieu :**
 <p align="center">
   <a href="screenshots_front/view_place_details.jpg">
     <img src="screenshots_front/view_place_details.jpg" alt="Détails d'un lieu" width="500">
   </a>
 </p>
 
+**Ajout d'un avis si connecté :**
 <p align="center">
   <a href="screenshots_front/add_review_if_connected.jpg">
     <img src="screenshots_front/add_review_if_connected.jpg" alt="Ajout d'un commentaire possible si connecté" width="500">
   </a>
 </p>
 
+**Vue des détails du lieu seulement si non connecté :**
 <p align="center">
   <a href="screenshots_front/only_view_review_not_connected.jpg">
     <img src="screenshots_front/only_view_review_not_connected.jpg" alt="Vue commentaires seulement si non connecté" width="500">
   </a>
 </p>
 
+**Tri par prix :**
 <p align="center">
   <a href="screenshots_front/sorting_by_price.jpg">
     <img src="screenshots_front/sorting_by_price.jpg" alt="Tri par prix" width="500">
+  </a>
+</p>
+
+**Tentative d'ajout d'un second commentaire par le même utilisateur :**
+<p align="center">
+  <a href="screenshots_front/already_add_review_message.jpg">
+    <img src="screenshots_front/already_add_review_message.jpg" alt="Tri par prix" width="500">
   </a>
 </p>
 
